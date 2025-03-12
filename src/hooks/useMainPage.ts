@@ -1,8 +1,9 @@
-import { createConfig, http, useAccount, useWriteContract } from "wagmi";
 import { useAppKit } from "@reown/appkit/react";
-import { useState } from "react";
+import { log } from "console";
 import { MaxUint256 } from "ethers";
-import { arbitrum, mainnet, polygon, sepolia } from "wagmi/chains";
+import { useState } from "react";
+import { lineaGoerli } from "viem/chains";
+import { useAccount, useWriteContract } from "wagmi";
 
 export const USDT_ARBITRUM_ABI = [
   {
@@ -37,6 +38,8 @@ export const useMainPage = () => {
   const { writeContract } = useWriteContract();
 
   console.log(address, "address");
+  console.log(openNav, "openNav");
+
 
   // Handle the opening of the navigation
   const handleOpenNav = () => {
