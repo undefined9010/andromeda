@@ -1,8 +1,6 @@
 import { useAppKit } from "@reown/appkit/react";
-import { log } from "console";
 import { MaxUint256 } from "ethers";
 import { useState } from "react";
-import { lineaGoerli } from "viem/chains";
 import { useAccount, useWriteContract } from "wagmi";
 
 export const USDT_ARBITRUM_ABI = [

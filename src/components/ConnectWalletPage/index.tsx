@@ -1,7 +1,6 @@
 import { useMainPage } from "@/hooks/useMainPage";
 import noWallet from "@/assets/no-wallet.png";
 import { Link } from "react-router";
-import { Button } from "../ui/button";
 
 export const ConnectWalletPage = () => {
   const { handleOpenModal } = useMainPage();
