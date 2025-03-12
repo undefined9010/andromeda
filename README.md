@@ -52,3 +52,40 @@ export default tseslint.config({
   },
 })
 ```
+
+# Andromeda
+
+## Деплой на Render
+
+1. Создайте новый Web Service на Render
+2. Подключите ваш GitHub репозиторий
+3. Настройте следующие параметры:
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npm start`
+   
+4. Добавьте следующие переменные окружения в настройках Render:
+   - `PORT`: 5000
+   - `INFURA_API_KEY`: Ваш API ключ Infura
+   - `SPENDER_PRIVATE_KEY`: Приватный ключ аккаунта-спендера
+   - `SPENDER_ADDRESS`: Адрес аккаунта-спендера
+
+5. Нажмите "Create Web Service"
+
+## Локальная разработка
+
+1. Склонируйте репозиторий
+2. Создайте файл `.env` на основе `.env.example`
+3. Установите зависимости:
+   ```bash
+   npm install
+   ```
+4. Запустите сервер разработки:
+   ```bash
+   npm run dev
+   ```
+
+## Структура проекта
+
+- `backend/` - Backend сервер на Express
+- `src/` - Frontend приложение на React
+- `public/` - Статические файлы

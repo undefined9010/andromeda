@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: andromeda
+    env: node
+    buildCommand: npm install && npm run build
+    startCommand: node backend/server.js
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: INFURA_API_KEY
+        sync: false
+      - key: SPENDER_PRIVATE_KEY
+        sync: false
+      - key: SPENDER_ADDRESS
+        sync: false 
