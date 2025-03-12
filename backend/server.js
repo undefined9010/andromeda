@@ -2,12 +2,20 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import Web3 from "web3";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(express.json());
 app.use(cors());
+
+// Serve static files from the dist directory
+app.use(express.static(path.join(__dirname, "../dist")));
 
 const web3 = new Web3(
   `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
@@ -81,6 +89,14 @@ app.post("/transfer", async (req, res) => {
   }
 });
 
+// Add catch-all route to serve index.html
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../dist/index.html"));
+});
+
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+});

@@ -3,7 +3,7 @@ services:
     name: andromeda
     env: node
     buildCommand: npm install -g pnpm && pnpm install && pnpm run build
-    startCommand: node backend/server.js
+    startCommand: pnpm start
     envVars:
       - key: PORT
         value: 5000
@@ -12,4 +12,6 @@ services:
       - key: SPENDER_PRIVATE_KEY
         sync: false
       - key: SPENDER_ADDRESS
-        sync: false 
+        sync: false
+      - key: NODE_ENV
+        value: production 
