@@ -50,7 +50,7 @@ export const AppHeader = () => {
 
           <ShimmerButton
             onClick={handleOpenModal}
-            className="text-white text-xl ml-[120px]"
+            className="text-white text-xl sm:[100px] md:ml-[120px]"
           >
             <span className="text-white">Connect wallet</span>
           </ShimmerButton>

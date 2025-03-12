@@ -1,15 +1,17 @@
 import { Footer } from "@/components/Footer";
-import { Outlet } from "react-router";
 import { AppHeader } from "@/components/AppHeader";
+import { Outlet, useLocation } from "react-router";
 
 export const AppLayout = () => {
+  const location = useLocation();
+  const hideFooterPaths = ['/app/pools', '/app/dashboard'];
+  const shouldShowFooter = !hideFooterPaths.includes(location.pathname);
+
   return (
-    <div className="flex flex-col max-h-[100vh]">
+    <div className="min-h-screen bg-[#0A0F1C]">
       <AppHeader />
-      <main className="flex-1 overflow-hidden w-full max-w-[1440px] mx-auto">
-        <Outlet />
-      </main>
-      <Footer />
+      <Outlet />
+      {shouldShowFooter && <Footer />}
     </div>
   );
 };

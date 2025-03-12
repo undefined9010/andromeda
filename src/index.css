@@ -32,6 +32,14 @@
   animation: blink 10s infinite ease-in-out;
 }
 
+@media screen and (max-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    margin: 0;
+  }
+}
+
 html, body {
   height: 100%;
   overflow: hidden;
