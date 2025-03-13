@@ -6,6 +6,7 @@ import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { useConsent } from "@/hooks/useConsent.ts";
 import { Consent } from "@/components/Consent.tsx";
 import { useNavigate } from "react-router";
+import { RoutePaths } from "@/router/routes.ts";
 
 export const Home = () => {
   useConsent();
@@ -14,7 +15,7 @@ export const Home = () => {
 
   return (
     <AnimatePresence>
-      <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-white dark:bg-neutral-950">
+      <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-[#0A0F1C]">
         <Hero />
         <div className="absolute inset-0">
           <FloatingPaths position={1} />
@@ -25,7 +26,7 @@ export const Home = () => {
             <YieldContainer />
             <div className="sm:hidden w-full flex justify-center pt-6">
               <ShimmerButton
-                onClick={() => navigate("/profile")}
+                onClick={() => navigate(RoutePaths.DASHBOARD)}
                 className="text-white"
               >
                 <span className="text-white">Earn now</span>

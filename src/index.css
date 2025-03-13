@@ -32,7 +32,9 @@
   animation: blink 10s infinite ease-in-out;
 }
 
-@media screen and (max-width: 768px) {
+
+
+@media screen and (min-width: 768px) {
   html, body {
     height: 100%;
     overflow: hidden;
@@ -40,11 +42,7 @@
   }
 }
 
-html, body {
-  height: 100%;
-  overflow: hidden;
-  margin: 0;
-}
+
 
 @layer utilities {
   .animate-shimmer-slide {

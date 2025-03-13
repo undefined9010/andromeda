@@ -8,6 +8,14 @@ import { RoutePaths } from "@/router/routes.ts";
 
 const navItems = [
   {
+    path: RoutePaths.DASHBOARD,
+    name: "Dashboard",
+  },
+  {
+    path: RoutePaths.POOLS,
+    name: "Pools",
+  },
+  {
     path: RoutePaths.HOME,
     name: "Docs",
   },
@@ -41,7 +49,7 @@ export const Header = () => {
             </ShimmerButton>
           </Link>
 
-          <div className="md:hidden">
+          <div className="md:hidden z-[9999]">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="text-white focus:outline-none"
@@ -67,7 +75,7 @@ export const Header = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden w-full gap-4 rounded-xl absolute top-0 py-8 bg-[#07c1b610] backdrop-blur-sm flex flex-col justify-center items-center -z-1"
+            className="md:hidden w-full gap-8 pt-[50px] rounded-xl absolute top-0 py-8 bg-[#07c1b610] backdrop-blur-sm flex flex-col justify-center items-center z-0"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: -15 }}
             exit={{ opacity: 0, y: -20 }}
