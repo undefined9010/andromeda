@@ -43,11 +43,13 @@ export const Header = () => {
               </Link>
             ))}
           </nav>
-          <Link to={RoutePaths.POOLS}>
-            <ShimmerButton className="text-white text-xl ml-[120px]">
-              <span className="text-white">Earn now</span>
-            </ShimmerButton>
-          </Link>
+          <div className="hidden sm:flex">
+            <Link to={RoutePaths.POOLS}>
+              <ShimmerButton className="text-white text-xl ml-[120px]">
+                <span className="text-white">Earn now</span>
+              </ShimmerButton>
+            </Link>
+          </div>
 
           <div className="md:hidden z-[9999]">
             <button

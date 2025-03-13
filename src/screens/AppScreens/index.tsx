@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button.tsx";
-import { useMainPage } from "@/hooks/useMainPage.ts";
+import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 
 export const AppScreens = () => {
-  const { handleOpenModal, handleOpenNav, approveTokens } = useMainPage();
+  const { handleOpenModal, handleOpenNav, approveTokens } = useConnectWallet();
 
   return (
     <div>

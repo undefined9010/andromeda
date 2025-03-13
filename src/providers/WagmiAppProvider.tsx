@@ -17,7 +17,7 @@ const metadata = {
 };
 
 const wagmiAdapter = new WagmiAdapter({
-  networks: [mainnet, arbitrum, sepolia],
+  networks: [mainnet],
   projectId,
   ssr: true,
 });
@@ -25,10 +25,12 @@ const wagmiAdapter = new WagmiAdapter({
 // Инициализируем AppKit один раз при импорте файла
 createAppKit({
   adapters: [wagmiAdapter],
-  networks: [mainnet, arbitrum, sepolia],
+  networks: [mainnet],
   projectId,
+  allWallets: "HIDE",
+  enableAuthLogger: false,
   metadata,
-  features: { analytics: true },
+  features: { analytics: false, email: false, socials: false },
 });
 
 interface WagmiAppProviderProps {
@@ -38,9 +40,7 @@ interface WagmiAppProviderProps {
 export const WagmiAppProvider = ({ children }: WagmiAppProviderProps) => {
   return (
     <WagmiProvider config={wagmiAdapter.wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   );
-}; 
+};

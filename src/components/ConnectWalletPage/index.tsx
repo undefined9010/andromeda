@@ -1,9 +1,9 @@
-import { useMainPage } from "@/hooks/useMainPage";
+import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 import noWallet from "@/assets/no-wallet.png";
 import { Link } from "react-router";
 
 export const ConnectWalletPage = () => {
-  const { handleOpenModal } = useMainPage();
+  const { handleOpenModal } = useConnectWallet();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] text-white">

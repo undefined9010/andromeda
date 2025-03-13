@@ -3,7 +3,7 @@ import LogoIcon from "@/assets/logo.svg?react";
 
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { Bubbles } from "@/components/Animation/Bubbles.tsx";
-import { useMainPage } from "@/hooks/useMainPage.ts";
+import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 import { RoutePaths } from "@/router/routes.ts";
 
 const navItems = [
@@ -18,7 +18,7 @@ const navItems = [
 ];
 
 export const AppHeader = () => {
-  const { handleOpenModal } = useMainPage();
+  const { handleOpenModal } = useConnectWallet();
   const location = useLocation();
 
   return (
