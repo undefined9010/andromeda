@@ -1,7 +1,7 @@
 import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { arbitrum, mainnet, sepolia } from "viem/chains";
+import { mainnet } from "viem/chains";
 import { ReactNode } from "react";
 import { createAppKit } from "@reown/appkit/react";
 
