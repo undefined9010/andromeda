@@ -28,6 +28,7 @@ createAppKit({
   networks: [mainnet],
   projectId,
   allWallets: "HIDE",
+  customWallets: [{ id: "2", name: "More wallets coming soon" }],
   enableAuthLogger: false,
   metadata,
   features: { analytics: false, email: false, socials: false },
