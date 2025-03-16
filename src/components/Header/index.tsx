@@ -38,14 +38,14 @@ export const Header = () => {
 
           <nav className="hidden md:flex w-full justify-end items-center space-x-6">
             {navItems.map((item) => (
-              <Link to={item.path} className="hover:text-teal-400 text-xl">
+              <Link to={item.path} className="hover:text-teal-400 text-md">
                 {item.name}
               </Link>
             ))}
           </nav>
           <div className="hidden sm:flex">
             <Link to={RoutePaths.POOLS}>
-              <ShimmerButton className="text-white text-xl ml-[120px]">
+              <ShimmerButton className="text-white text-md ml-[120px]">
                 <span className="text-white">Earn now</span>
               </ShimmerButton>
             </Link>

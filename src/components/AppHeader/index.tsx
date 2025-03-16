@@ -37,7 +37,7 @@ export const AppHeader = () => {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`hover:text-teal-400 text-xl transition-colors ${
+                className={`hover:text-teal-400 text-md transition-colors ${
                   location.pathname === item.path
                     ? "text-teal-400"
                     : "text-white"

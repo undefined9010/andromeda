@@ -7,7 +7,7 @@ export const YieldContainer = () => {
 
   return (
     <div className="w-full flex flex-col  justify-center items-center">
-      <h1 className="text-3xl  sm:text-4xl md:text-6xl font-extralight  text-white mb-6 sm:mb-8">
+      <h1 className="text-3xl  sm:text-3xl md:text-4xl font-extralight  text-white mb-6 sm:mb-8">
         Liberating Yield
       </h1>
 

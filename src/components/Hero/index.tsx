@@ -24,7 +24,7 @@ export const Hero = () => {
           }}
           className="bg-gradient-to-br from-white to-slate-500 bg-clip-text text-center text-4xl font-medium tracking-tight text-transparent md:text-7xl"
         >
-          <h1 className="text-4xl sm:text-7xl md:text-8xl font-semibold tracking-tighter text-glow">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-semibold tracking-tighter text-glow">
             {words?.map((word, wordIndex) => (
               <span key={wordIndex} className="inline-block mr-4 last:mr-0">
                 {word.split("").map((letter, letterIndex) => (
@@ -39,8 +39,8 @@ export const Hero = () => {
                       damping: 25,
                     }}
                     className="inline-block text-transparent bg-clip-text
-                                      bg-gradient-to-r from-neutral-900 to-neutral-700/80
-                                      dark:from-white/10 dark:to-white/10"
+                                      bg-gradient-to-r
+                                      from-white/10 to-white/10"
                   >
                     {letter}
                   </motion.span>
