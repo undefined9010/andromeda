@@ -31,7 +31,7 @@ export const PoolCardContainer = () => {
       >
         <div className="block h-full sm:hidden overflow-y-auto pb-[100px]">
           <div className="flex flex-col gap-4 p-4 pb-6 min-h-screen">
-            {Array.from({ length: 6 }).map((_, index) => (
+            {Array.from({ length: 3 }).map((_, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
