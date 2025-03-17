@@ -31,7 +31,7 @@ const navItems = [
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { handleOpenModal } = useConnectWallet();
+  const { handleOpenModal, handleDisconnect } = useConnectWallet();
   const { isConnected, chain, address, status } = useAccount();
 
   const isSoon = (item: { name: string }) =>
@@ -69,6 +69,7 @@ export const Header = () => {
                 </ShimmerButton>
               ) : (
                 <WalletMenu
+                  handleDisconnect={handleDisconnect}
                   status={status}
                   chain={chain?.name ?? ""}
                   address={address ?? ""}
