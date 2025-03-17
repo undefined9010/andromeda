@@ -78,12 +78,10 @@ export const AppHeader = () => {
       <div className="max-w-[1920px] hidden sm:flex mx-auto px-4 sm:px-6 lg:px-8 w-full justify-between items-center py-4">
         {/* Main nav (desktop) */}
         <nav className="hidden md:flex w-full justify-between items-center">
-          <div className="text-2xl font-bold">
+          <div className="flex gap-6 items-center">
             <Link to="/" className="cursor-pointer">
               <img src={LogoIcon} alt="Logo" className="h-8" />
             </Link>
-          </div>
-          <div className="flex gap-6 items-center">
             {navItems.map((item) => (
               <Link
                 key={item.path}
