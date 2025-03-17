@@ -10,7 +10,7 @@ export const Dashboard = () => {
   const [displayMode, setDisplayMode] = useState<"USD" | "Underlying">("USD");
   const { handleDisconnect } = useConnectWallet();
 
-  const { isConnected, chain, status, address } = useAccount();
+  const { chain, status, address } = useAccount();
 
   const shortAddress = address
     ? `${address.slice(0, 10)}...${address.slice(-4)}`

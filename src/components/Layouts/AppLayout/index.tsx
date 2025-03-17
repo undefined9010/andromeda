@@ -8,8 +8,8 @@ export const AppLayout = () => {
       <div className="max-w-[1550px] mx-auto">
         <AppHeader />
         <Outlet />
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

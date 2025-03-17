@@ -3,7 +3,7 @@ import { Link } from "react-router";
 export const Footer = () => {
   return (
     <footer
-      className={`sticky left-0 w-full bg-[#6e89e010] backdrop-blur-lg shadow-lg  text-white py-4 md:py-8 transition-all duration-300 ease-in-out bottom-0`}
+      className={`fixed bottom-0 left-0 w-full bg-[#6e89e010] backdrop-blur-lg shadow-lg  text-white py-4 md:py-8`}
     >
       <div className="max-w-full flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
