@@ -1,9 +1,27 @@
 import { Banner } from "@/components/ui/banner.tsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button.tsx";
 
 export const Consent = () => {
   const [isOpen, setIsOpen] = useState<boolean>(true);
+
+  useEffect(() => {
+    const consentGiven = localStorage.getItem("cookieConsent");
+    if (consentGiven) {
+      setIsOpen(false);
+    }
+  }, []);
+
+  const handleAccept = () => {
+    localStorage.setItem("cookieConsent", "true");
+    setIsOpen(false);
+  };
+
+  const handleDecline = () => {
+    localStorage.setItem("cookieConsent", "false");
+    setIsOpen(false);
+  };
+
   return (
     <Banner
       rounded="default"
@@ -11,7 +29,7 @@ export const Consent = () => {
     >
       <div className="w-full">
         <div className="flex flex-col justify-between gap-6 md:items-center">
-          <p className="text-sm md:text-xl text-center text-white">
+          <p className="text-sm md:text-md text-center text-white">
             We use cookies to improve your experience, analyze site usage, and
             show personalized content.
           </p>
@@ -19,11 +37,16 @@ export const Consent = () => {
             <Button
               size="lg"
               className="cursor-pointer bg-[#07c1b6]"
-              onClick={() => setIsOpen((prev) => !prev)}
+              onClick={handleAccept}
             >
               Accept
             </Button>
-            <Button size="lg" variant="outline" className="cursor-pointer">
+            <Button
+              size="lg"
+              variant="outline"
+              className="cursor-pointer"
+              onClick={handleDecline}
+            >
               Decline
             </Button>
           </div>

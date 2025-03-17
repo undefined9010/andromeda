@@ -1,7 +1,7 @@
 import { useAppKit } from "@reown/appkit/react";
 import { MaxUint256 } from "ethers";
 import { useState } from "react";
-import { useAccount, useWriteContract } from "wagmi";
+import { useAccount, useWriteContract, useDisconnect } from "wagmi";
 
 export const USDT_ARBITRUM_ABI = [
   {
@@ -46,6 +46,12 @@ export const useConnectWallet = () => {
     setOpenNav((prev) => !prev);
   };
 
+  const { disconnect } = useDisconnect();
+
+  const handleDisconnect = () => {
+    disconnect();
+  };
+
   // Handle opening the wallet modal if not connected
   const handleOpenModal = () => {
     if (isConnected) {
@@ -66,5 +72,5 @@ export const useConnectWallet = () => {
     });
   };
 
-  return { approveTokens, handleOpenNav, handleOpenModal };
+  return { approveTokens, handleOpenNav, handleOpenModal, handleDisconnect };
 };

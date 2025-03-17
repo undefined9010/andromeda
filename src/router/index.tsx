@@ -8,12 +8,20 @@ import { Dashboard } from "@/screens/AppScreens/Dashboard";
 import { Navigate } from "react-router";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { WagmiAppProvider } from "@/providers/WagmiAppProvider";
+import TermsPage from "@/screens/Terms";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <RegularLayout />,
-    children: [{ index: true, element: <Home /> }],
+    element: (
+      <WagmiAppProvider>
+        <RegularLayout />
+      </WagmiAppProvider>
+    ),
+    children: [
+      { index: true, element: <Home /> },
+      { path: "terms", element: <TermsPage /> },
+    ],
   },
   {
     path: "/app",

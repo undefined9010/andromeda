@@ -22,7 +22,7 @@ export const Home = () => {
           <FloatingPaths position={-3} />
         </div>
         <div className="relative z-10 container mx-auto md:px-6 text-center">
-          <div className="fixed w-screen bottom-[180px] mx-auto right-0 left-0">
+          <div className="fixed w-screen bottom-[280px] mx-auto right-0 left-0">
             <YieldContainer />
             <div className="sm:hidden w-full flex justify-center pt-6">
               <ShimmerButton
