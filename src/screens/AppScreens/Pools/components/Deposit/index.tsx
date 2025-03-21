@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { ChangeEvent, FC, useState } from "react";
 import AssetCard from "@/components/AssetCard.tsx";
+import { useConnectWallet } from "@/hooks/useConnectWallet";
 
 type DepositProps = {
   isOpen: boolean;
@@ -17,6 +18,7 @@ type DepositProps = {
 
 export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
+  const {approveTokens} = useConnectWallet()
 
   // Handle card selection
   const handleSelectAsset = (asset: string) => {
@@ -31,14 +33,15 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
-      <DialogTrigger asChild>
+      {/* <DialogTrigger asChild> */}
         <Button
+        onClick={approveTokens}
           className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-xs font-medium hover:opacity-90 transition-opacity shrink-0"
           variant="outline"
         >
           Deposit
         </Button>
-      </DialogTrigger>
+      {/* </DialogTrigger> */}
       <DialogContent className="max-w-[425px]  p-4 rounded-2xl bg-gradient-to-br from-gray-800/20 to-gray-900/10 backdrop-blur-xl shadow-lg border border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-white">Deposit</DialogTitle>
