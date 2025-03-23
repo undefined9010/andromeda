@@ -10,6 +10,7 @@ import {
 import { ChangeEvent, FC, useState } from "react";
 import AssetCard from "@/components/AssetCard.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet";
+import { DepositForm } from "@/screens/AppScreens/Pools/components/DepositFrom.tsx";
 
 type DepositProps = {
   isOpen: boolean;
@@ -18,7 +19,7 @@ type DepositProps = {
 
 export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
-  const {approveTokens} = useConnectWallet()
+  const { approveTokens } = useConnectWallet();
 
   // Handle card selection
   const handleSelectAsset = (asset: string) => {
@@ -33,15 +34,15 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
-      {/* <DialogTrigger asChild> */}
+      <DialogTrigger asChild className="cursor-pointer">
         <Button
-        onClick={approveTokens}
+          // onClick={() => approveTokens("25.25")}
           className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-xs font-medium hover:opacity-90 transition-opacity shrink-0"
           variant="outline"
         >
           Deposit
         </Button>
-      {/* </DialogTrigger> */}
+      </DialogTrigger>
       <DialogContent className="max-w-[425px]  p-4 rounded-2xl bg-gradient-to-br from-gray-800/20 to-gray-900/10 backdrop-blur-xl shadow-lg border border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-white">Deposit</DialogTitle>
@@ -76,22 +77,7 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
               </div>
             </>
           ) : (
-            // Show input field after selecting an asset
-            <div className="mt-3 w-full flex flex-col items-center justify-center gap-6">
-              <p className="text-white mb-2">{selectedAsset} Selected</p>
-              <input
-                type="number"
-                placeholder="Enter amount"
-                className="px-3 py-2 bg-gray-800 text-white rounded-lg border border-gray-700 w-full"
-                onChange={handleInputChange}
-              />
-              <Button
-                className="mt-4 px-4 py-2 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-md font-medium hover:opacity-90 transition-opacity shrink-0"
-                variant="outline"
-              >
-                Charge now
-              </Button>
-            </div>
+            <DepositForm />
           )}
         </div>
       </DialogContent>

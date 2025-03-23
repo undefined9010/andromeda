@@ -11,20 +11,20 @@ export const PoolCardContainer = () => {
 
   useEffect(() => {
     if (!isConnected) {
-      document.body.style.overflow = "hidden"; // Отключаем прокрутку
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = ""; // Включаем обратно
+      document.body.style.overflow = "";
     }
 
     return () => {
-      document.body.style.overflow = ""; // Очистка при размонтировании
+      document.body.style.overflow = "";
     };
   }, [isConnected]);
 
   return (
-    <div className="relative h-full">
+    <div className="relative h-full z-20">
       {!isConnected && (
-        <div className="absolute  z-50 top-1/4 sm:top-40 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center bg-black/50 text-white text-lg sm:text-xl font-semibold px-4 py-3 rounded-md mt-4 w-[90%] max-w-md">
+        <div className="absolute z-50 top-1/4 sm:top-40 left-1/2 -translate-x-1/2 flex flex-col items-center justify-center bg-black/50 text-white text-lg sm:text-xl font-semibold px-4 py-3 rounded-md mt-4 w-[90%] max-w-md">
           <p className="text-center font-[400]">Please connect your wallet</p>
 
           <div className="flex mt-3">

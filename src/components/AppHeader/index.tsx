@@ -5,7 +5,7 @@ import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { Bubbles } from "@/components/Animation/Bubbles.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 import { RoutePaths } from "@/router/routes.ts";
-import { useAccount } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import { Menubar, MenubarContent } from "../ui/menubar";
 import { MenubarMenu, MenubarTrigger } from "@radix-ui/react-menubar";
 import { BadgeCheck } from "lucide-react";
@@ -26,12 +26,20 @@ const navItems = [
   },
 ];
 
+type Balance = {
+  decimals: number;
+  formatted: string;
+  symbol: string;
+  value: bigint;
+};
+
 export const WalletMenu: FC<{
   status: string;
   chain: string;
   address: string;
   handleDisconnect: VoidFunction;
-}> = ({ status, chain, address, handleDisconnect }) => {
+  balance: Balance | undefined;
+}> = ({ status, chain, address, balance, handleDisconnect }) => {
   return (
     <Menubar className="bg-transparent border-0 ">
       <MenubarMenu>
@@ -46,13 +54,24 @@ export const WalletMenu: FC<{
         <MenubarContent className="backdrop-blur-2xl bg-[#6e89e010] py-3 px-4 mr-8  md:px-6 md:py-4 border-0">
           <div className="flex-col gap-3 flex">
             <p className="text-sm text-white hidden sm:flex">
-              Chain:{" "}
-              <span className="text-teal-400 animate-pulse">{chain}</span>
+              Chain:
+              <span className="text-teal-400 animate-pulse ml-2"> {chain}</span>
             </p>
             <p className="text-sm text-white hidden sm:flex">
-              Wallet:{" "}
-              <span className="text-teal-400 animate-pulse">{address}</span>
+              Wallet:
+              <span className="text-teal-400 animate-pulse ml-2">
+                {address}
+              </span>
             </p>
+            <p className="text-sm text-white hidden sm:flex">
+              Balance:
+              <span className="text-teal-400 animate-pulse ml-2">
+                <p>
+                  {balance ? `${balance.formatted} ${balance.symbol}` : "0"}
+                </p>
+              </span>
+            </p>
+
             <p
               onClick={handleDisconnect}
               className="text-sm text-white cursor-pointer"
@@ -68,6 +87,9 @@ export const WalletMenu: FC<{
 
 export const AppHeader = () => {
   const { isConnected, chain, status, address } = useAccount();
+  const { data: balance } = useBalance({
+    address,
+  });
   const { handleOpenModal, handleDisconnect } = useConnectWallet();
   const location = useLocation();
 
@@ -115,6 +137,7 @@ export const AppHeader = () => {
             status={status}
             chain={chain?.name ?? ""}
             address={address ?? ""}
+            balance={balance}
           />
         )}
       </div>
