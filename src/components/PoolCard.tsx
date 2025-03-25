@@ -32,7 +32,7 @@ export const PoolCard = () => {
         <AssetCard
           label="YT"
           labelColor="text-blue-400"
-          description="Long Yield APY"
+          description="Liberating Yield APY"
           valueColor="text-red-400"
           value="-100%"
           price="$0.02905"
@@ -42,7 +42,7 @@ export const PoolCard = () => {
         <AssetCard
           label="PT"
           labelColor="text-green-400"
-          description="Fixed APY"
+          description="Fixed Yield APY"
           valueColor="text-green-400"
           value="13.63%"
           price="$0.9704"

