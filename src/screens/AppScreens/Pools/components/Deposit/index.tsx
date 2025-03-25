@@ -36,8 +36,8 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
       {/*<DialogTrigger asChild className="cursor-pointer">*/}
       <Button
         onClick={() => transferTokens("0.25")}
-        className="px-4 py-1.5 bg-gradient-to-r from-blue-500 to-teal-400 text-white rounded-full text-xs font-medium hover:opacity-90 transition-opacity shrink-0"
-        variant="outline"
+        className="cursor-pointer px-4 py-1.5 bg-gradient-to-r hover:from-teal-200 from-teal-400 to-teal-600 text-white rounded-full text-xs font-medium hover:opacity-50 transition-opacity shrink-0"
+        variant="default"
       >
         Deposit
       </Button>

@@ -3,7 +3,70 @@ import { motion } from "framer-motion";
 import { useAccount } from "wagmi";
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
+import TetherIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
+import UsdcIcon from "@/assets/coinIcons/usdc-logo.svg?react";
+import DaiIcon from "@/assets/coinIcons/dai-logo.svg?react";
+
+export type PoolType = {
+  chainId: string;
+  icon: ReactNode;
+  coinName: string;
+  date: string;
+  liquidity: string;
+  isActive: boolean;
+};
+
+const activePools: PoolType[] = [
+  {
+    chainId: "13314",
+    icon: <TetherIcon />,
+    coinName: "USDT",
+    date: "28 Sep 2025",
+    liquidity: "$ 420.66M",
+    isActive: true,
+  },
+  {
+    chainId: "24214",
+    icon: <UsdcIcon />,
+    coinName: "USDC",
+    date: "28 Sep 2025",
+    liquidity: "$ 380.12M",
+    isActive: true,
+  },
+  {
+    chainId: "63434",
+    icon: <DaiIcon />,
+    coinName: "DAI",
+    date: "28 Sep 2025",
+    liquidity: "$ 510.43M",
+    isActive: true,
+  },
+  {
+    chainId: "13314",
+    icon: <TetherIcon />,
+    coinName: "USDT",
+    date: "28 Sep 2024",
+    liquidity: "$ 887.56M",
+    isActive: false,
+  },
+  {
+    chainId: "24214",
+    icon: <UsdcIcon />,
+    coinName: "USDC",
+    date: "28 Sep 2024",
+    liquidity: "$ 680.23M",
+    isActive: false,
+  },
+  {
+    chainId: "63434",
+    icon: <DaiIcon />,
+    coinName: "DAI",
+    date: "28 Sep 2024",
+    liquidity: "$ 910.32M",
+    isActive: false,
+  },
+];
 
 export const PoolCardContainer = () => {
   const { isConnected } = useAccount();
@@ -44,9 +107,9 @@ export const PoolCardContainer = () => {
       >
         <div className="block h-full sm:hidden overflow-y-auto pb-[100px]">
           <div className="flex flex-col gap-4 p-4 pb-6 min-h-screen">
-            {Array.from({ length: 3 }).map((_, index) => (
+            {activePools.map((item, index) => (
               <motion.div
-                key={index}
+                key={item.chainId}
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
@@ -55,16 +118,16 @@ export const PoolCardContainer = () => {
                   ease: "circIn",
                 }}
               >
-                <PoolCard />
+                <PoolCard item={item} />
               </motion.div>
             ))}
           </div>
         </div>
 
         <div className="hidden sm:grid h-full overflow-y-hidden sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 ">
-          {Array.from({ length: 6 }).map((_, index) => (
+          {activePools.map((item, index) => (
             <motion.div
-              key={index}
+              key={item.chainId}
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -74,7 +137,7 @@ export const PoolCardContainer = () => {
               }}
               className="w-full"
             >
-              <PoolCard />
+              <PoolCard item={item} />
             </motion.div>
           ))}
         </div>
