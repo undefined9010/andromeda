@@ -39,7 +39,7 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
       <div>
         {/* YT Card */}
         <AssetCard
-          label="YT"
+          label="LY"
           labelColor="text-blue-400"
           description="Liberating Yield APY"
           valueColor="text-red-400"
@@ -49,7 +49,7 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
 
         {/* PT Card */}
         <AssetCard
-          label="PT"
+          label="FY"
           labelColor="text-green-400"
           description="Fixed Yield APY"
           valueColor="text-green-400"

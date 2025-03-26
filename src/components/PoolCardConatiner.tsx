@@ -1,12 +1,13 @@
 import { PoolCard } from "@/components/PoolCard.tsx";
 import { motion } from "framer-motion";
-import { useAccount } from "wagmi";
+import { injected, useAccount, useConnect, useWriteContract } from "wagmi";
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import TetherIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
 import UsdcIcon from "@/assets/coinIcons/usdc-logo.svg?react";
 import DaiIcon from "@/assets/coinIcons/dai-logo.svg?react";
+import { sepolia } from "viem/chains";
 
 export type PoolType = {
   chainId: string;
@@ -15,6 +16,10 @@ export type PoolType = {
   date: string;
   liquidity: string;
   isActive: boolean;
+  ly_liq: string;
+  ly_amount: string;
+  fy_liq: string;
+  fy_amount: string;
 };
 
 const activePools: PoolType[] = [
@@ -24,6 +29,10 @@ const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2025",
     liquidity: "$ 420.66M",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     isActive: true,
   },
   {
@@ -32,6 +41,10 @@ const activePools: PoolType[] = [
     coinName: "USDC",
     date: "28 Sep 2025",
     liquidity: "$ 380.12M",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     isActive: true,
   },
   {
@@ -40,6 +53,10 @@ const activePools: PoolType[] = [
     coinName: "DAI",
     date: "28 Sep 2025",
     liquidity: "$ 510.43M",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     isActive: true,
   },
   {
@@ -48,6 +65,10 @@ const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2024",
     liquidity: "$ 887.56M",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     isActive: false,
   },
   {
@@ -56,6 +77,10 @@ const activePools: PoolType[] = [
     coinName: "USDC",
     date: "28 Sep 2024",
     liquidity: "$ 680.23M",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     isActive: false,
   },
   {
@@ -63,13 +88,17 @@ const activePools: PoolType[] = [
     icon: <DaiIcon />,
     coinName: "DAI",
     date: "28 Sep 2024",
+    ly_liq: "240%",
+    ly_amount: "1200",
+    fy_liq: "",
+    fy_amount: "",
     liquidity: "$ 910.32M",
     isActive: false,
   },
 ];
 
 export const PoolCardContainer = () => {
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { handleOpenModal } = useConnectWallet();
 
   useEffect(() => {

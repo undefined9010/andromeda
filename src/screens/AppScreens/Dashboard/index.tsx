@@ -3,7 +3,7 @@ import { useAccount } from "wagmi";
 import { WalletMenu } from "@/components/AppHeader";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 
-const tabs = ["All Assets", "PT", "YT", "LP"];
+const tabs = ["All Assets", "PT", "LY", "LP"];
 
 export const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("All Assets");
