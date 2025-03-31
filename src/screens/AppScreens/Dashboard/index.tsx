@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount, useBalance } from "wagmi";
 import { WalletMenu } from "@/components/AppHeader";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 
@@ -11,6 +11,10 @@ export const Dashboard = () => {
   const { handleDisconnect } = useConnectWallet();
 
   const { chain, status, address } = useAccount();
+
+  const { data: balance } = useBalance({
+    address,
+  });
 
   const shortAddress = address
     ? `${address.slice(0, 10)}...${address.slice(-4)}`
@@ -46,7 +50,9 @@ export const Dashboard = () => {
             <span className="text-blue-400">$</span>
             <p className="text-sm md:text-md">My Current Balance</p>
           </div>
-          <div className="text-2xl sm:text-3xl font-semibold">$0</div>
+          <div className="text-2xl sm:text-3xl font-semibold">
+            {balance?.formatted} {balance?.symbol}
+          </div>
         </div>
 
         <div className="p-4 sm:p-6 rounded-xl bg-[#1a1f2e] border border-gray-800">

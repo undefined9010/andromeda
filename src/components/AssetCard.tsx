@@ -19,7 +19,7 @@ const AssetCard: FC<AssetCardProps> = ({
 }) => {
   return (
     <div
-      className={`mt-3 p-3 rounded-xl bg-gray-800/50 border border-gray-700`}
+      className={`mt-3 p-3 rounded-xl bg-gray-800/50 hover:bg-gray-600/50 active:bg-gray-400/50 border border-gray-700 cursor-pointer`}
     >
       <div className="flex justify-between items-center">
         <span className={`font-semibold text-sm ${labelColor}`}>{label}</span>

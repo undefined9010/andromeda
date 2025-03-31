@@ -13,29 +13,17 @@ import { FC, useState } from "react";
 import AssetCard from "@/components/AssetCard.tsx";
 import { DepositForm } from "@/screens/AppScreens/Pools/components/DepositForm.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
-
-// const USDT_ADDRESS = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // Replace with actual USDT contract address
-// const USDT_ABI = [
-//   {
-//     constant: false,
-//     inputs: [
-//       { name: "_to", type: "address" },
-//       { name: "_value", type: "uint256" },
-//     ],
-//     name: "transfer",
-//     outputs: [{ name: "success", type: "bool" }],
-//     type: "function",
-//   },
-// ];
+import { PoolType } from "@/components/PoolCardConatiner.tsx";
 
 type DepositProps = {
   isOpen: boolean;
   setIsOpen: (isOpen: (prev: boolean) => boolean) => void;
+  item: PoolType;
 };
 
-export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
+export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen, item }) => {
   const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
-  const { transferTokens } = useConnectWallet();
+  const { transferTokens, approveTokens } = useConnectWallet();
 
   const web3 = new Web3(
     `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
@@ -46,7 +34,8 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
     <Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
       <DialogTrigger>
         <Button
-          onClick={() => transferTokens(tokenAmount)}
+          // onClick={() => transferTokens(tokenAmount)}
+          onClick={approveTokens}
           className="cursor-pointer px-4 py-1.5 bg-gradient-to-r hover:from-teal-200 from-teal-400 to-teal-600 text-white rounded-full text-xs font-medium hover:opacity-50 transition-opacity shrink-0"
           variant="default"
         >
@@ -54,7 +43,7 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="max-w-[425px] p-4 rounded-2xl bg-gradient-to-br from-gray-100/20 to-gray-200/10 backdrop-blur-xl shadow-lg border border-gray-700">
+      <DialogContent className="w-full md:min-w-[500px] p-4 rounded-2xl bg-gradient-to-br from-gray-800/20 to-gray-900/10 backdrop-blur-lg shadow-lg border border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-white">Deposit</DialogTitle>
           <DialogDescription className="text-white">
@@ -67,23 +56,23 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
             <>
               <div className="w-full" onClick={() => setSelectedAsset("YT")}>
                 <AssetCard
-                  label="YT"
+                  label="LY"
                   labelColor="text-blue-400"
                   description="Lieberating Yield APY"
-                  valueColor="text-red-400"
-                  value="-100%"
-                  price="$0.02905"
+                  valueColor="text-green-400"
+                  value={item.ly_liq}
+                  price={item.ly_amount}
                 />
               </div>
 
               <div className="w-full" onClick={() => setSelectedAsset("PT")}>
                 <AssetCard
-                  label="PT"
+                  label="FY"
                   labelColor="text-green-400"
                   description="Fixed Yield APY"
                   valueColor="text-green-400"
-                  value="13.63%"
-                  price="$0.9704"
+                  value={item.fy_liq}
+                  price={item.fy_amount}
                 />
               </div>
             </>

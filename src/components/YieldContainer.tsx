@@ -73,7 +73,7 @@ export const YieldContainer = () => {
           ))}
         </div>
       ) : (
-        <div className="flex w-full max-w-[850px] gap-6 sm:gap-8 items-center justify-center sm:justify-between">
+        <div className="flex w-full px-8 md:px-0 md:max-w-[850px] gap-6 sm:gap-8 items-center justify-center sm:justify-between">
           <YieldCard {...cards[0]} />
         </div>
       )}

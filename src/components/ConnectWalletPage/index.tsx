@@ -16,7 +16,7 @@ export const ConnectWalletPage = () => {
       <div className="flex flex-col pt-6 sm:pt-0 sm:flex-row gap-4">
         <button
           onClick={handleOpenModal}
-          className="px-8 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full text-white font-medium hover:opacity-90 transition-opacity"
+          className="px-8 py-2 sm:py-3 bg-gradient-to-r from-blue-500 to-teal-400 rounded-full text-white font-medium hover:opacity-90 transition-opacity cursor-pointer"
         >
           Connect Wallet
         </button>
@@ -24,7 +24,7 @@ export const ConnectWalletPage = () => {
         <Link
           to="https://docs.reown.com"
           target="_blank"
-          className="px-8 py-2 sm:py-3 border border-teal-400 text-teal-400 rounded-full font-medium hover:bg-teal-400/10 transition-colors"
+          className="px-8 py-2 sm:py-3 border border-teal-400 text-teal-400 rounded-full font-medium hover:bg-teal-400/10 transition-colors cursor-pointer"
         >
           Read our Docs
         </Link>
