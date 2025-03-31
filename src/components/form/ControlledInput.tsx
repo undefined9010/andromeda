@@ -38,7 +38,7 @@ export const Input = <
     required,
     placeholder,
     label,
-    error,
+    // error,
     balance,
     symbol,
   } = props;
@@ -54,7 +54,7 @@ export const Input = <
       {label && <Form.Label>{label}</Form.Label>}
       <Form.Control asChild>
         <div className="border w-full border-gray-600 h-12 rounded-lg flex items-center justify-between">
-          <span className="pl-2 pr-8 flex-shrink-0">
+          <span className="pl-2 pr-5 flex-shrink-0">
             <UsdtIcon width={24} height={24} />
           </span>
           <input
@@ -63,7 +63,7 @@ export const Input = <
             disabled={disabled}
             placeholder={placeholder}
             autoComplete="off"
-            className="focus:outline-none w-1/2 focus:ring-0 focus:border-transparent text-green-100"
+            className="focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100"
           />
           {balance && (
             <span className="w-full text-gray-500 text-xs line-clamp-1 text-right pr-2">
