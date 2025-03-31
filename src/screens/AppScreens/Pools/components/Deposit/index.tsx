@@ -5,30 +5,28 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import Web3 from "web3";
 
 import { FC, useState } from "react";
 import AssetCard from "@/components/AssetCard.tsx";
-import { DepositForm } from "@/screens/AppScreens/Pools/components/DepositFrom.tsx";
-import { injected, useAccount, useConnect, useWriteContract } from "wagmi";
-import { getAddress, parseUnits } from "viem";
-import { sepolia } from "viem/chains";
+import { DepositForm } from "@/screens/AppScreens/Pools/components/DepositForm.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 
-const USDT_ADDRESS = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // Replace with actual USDT contract address
-const USDT_ABI = [
-  {
-    constant: false,
-    inputs: [
-      { name: "_to", type: "address" },
-      { name: "_value", type: "uint256" },
-    ],
-    name: "transfer",
-    outputs: [{ name: "success", type: "bool" }],
-    type: "function",
-  },
-];
+// const USDT_ADDRESS = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"; // Replace with actual USDT contract address
+// const USDT_ABI = [
+//   {
+//     constant: false,
+//     inputs: [
+//       { name: "_to", type: "address" },
+//       { name: "_value", type: "uint256" },
+//     ],
+//     name: "transfer",
+//     outputs: [{ name: "success", type: "bool" }],
+//     type: "function",
+//   },
+// ];
 
 type DepositProps = {
   isOpen: boolean;
@@ -46,15 +44,17 @@ export const Deposit: FC<DepositProps> = ({ isOpen, setIsOpen }) => {
 
   return (
     <Dialog open={isOpen} onOpenChange={() => setIsOpen((prev) => !prev)}>
-      <Button
-        onClick={() => transferTokens(tokenAmount)}
-        className="cursor-pointer px-4 py-1.5 bg-gradient-to-r hover:from-teal-200 from-teal-400 to-teal-600 text-white rounded-full text-xs font-medium hover:opacity-50 transition-opacity shrink-0"
-        variant="default"
-      >
-        Deposit
-      </Button>
+      <DialogTrigger>
+        <Button
+          onClick={() => transferTokens(tokenAmount)}
+          className="cursor-pointer px-4 py-1.5 bg-gradient-to-r hover:from-teal-200 from-teal-400 to-teal-600 text-white rounded-full text-xs font-medium hover:opacity-50 transition-opacity shrink-0"
+          variant="default"
+        >
+          Deposit
+        </Button>
+      </DialogTrigger>
 
-      <DialogContent className="max-w-[425px] p-4 rounded-2xl bg-gradient-to-br from-gray-800/20 to-gray-900/10 backdrop-blur-xl shadow-lg border border-gray-700">
+      <DialogContent className="max-w-[425px] p-4 rounded-2xl bg-gradient-to-br from-gray-100/20 to-gray-200/10 backdrop-blur-xl shadow-lg border border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-white">Deposit</DialogTitle>
           <DialogDescription className="text-white">

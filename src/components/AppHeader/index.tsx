@@ -38,7 +38,7 @@ export const WalletMenu: FC<{
   chain: string;
   address: string;
   handleDisconnect: VoidFunction;
-  balance: Balance | undefined;
+  balance?: Balance | undefined;
 }> = ({ status, chain, address, balance, handleDisconnect }) => {
   return (
     <Menubar className="bg-transparent border-0 ">

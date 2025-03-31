@@ -12,7 +12,10 @@ export const YieldContainer = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
   // const cards = isMobile ? [1] : [1, 2, 3];
 
-  const cards: PoolType[] = [
+  const cards: Omit<
+    PoolType,
+    "ly_liq" | "ly_amount" | "fy_liq" | "fy_amount"
+  >[] = [
     {
       chainId: "13314",
       icon: (

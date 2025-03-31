@@ -1,13 +1,12 @@
 import { PoolCard } from "@/components/PoolCard.tsx";
 import { motion } from "framer-motion";
-import { injected, useAccount, useConnect, useWriteContract } from "wagmi";
+import { useAccount } from "wagmi";
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect } from "react";
 import TetherIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
 import UsdcIcon from "@/assets/coinIcons/usdc-logo.svg?react";
 import DaiIcon from "@/assets/coinIcons/dai-logo.svg?react";
-import { sepolia } from "viem/chains";
 
 export type PoolType = {
   chainId: string;
@@ -29,10 +28,10 @@ const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2025",
     liquidity: "$ 420.66M",
-    ly_liq: "240%",
-    ly_amount: "1200",
-    fy_liq: "",
-    fy_amount: "",
+    ly_liq: "210%",
+    ly_amount: "$0.9704",
+    fy_liq: "148%",
+    fy_amount: "$0.8323",
     isActive: true,
   },
   {
@@ -42,9 +41,9 @@ const activePools: PoolType[] = [
     date: "28 Sep 2025",
     liquidity: "$ 380.12M",
     ly_liq: "240%",
-    ly_amount: "1200",
-    fy_liq: "",
-    fy_amount: "",
+    ly_amount: "$0.4504",
+    fy_liq: "194%",
+    fy_amount: "0.8421",
     isActive: true,
   },
   {
@@ -53,10 +52,10 @@ const activePools: PoolType[] = [
     coinName: "DAI",
     date: "28 Sep 2025",
     liquidity: "$ 510.43M",
-    ly_liq: "240%",
-    ly_amount: "1200",
-    fy_liq: "",
-    fy_amount: "",
+    ly_liq: "202%",
+    ly_amount: "$0.5561",
+    fy_liq: "232%",
+    fy_amount: "$0.4728",
     isActive: true,
   },
   {
@@ -65,10 +64,10 @@ const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2024",
     liquidity: "$ 887.56M",
-    ly_liq: "240%",
-    ly_amount: "1200",
-    fy_liq: "",
-    fy_amount: "",
+    ly_liq: "180%",
+    ly_amount: "$1.2482",
+    fy_liq: "199%",
+    fy_amount: "$1.001",
     isActive: false,
   },
   {
@@ -98,7 +97,7 @@ const activePools: PoolType[] = [
 ];
 
 export const PoolCardContainer = () => {
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const { handleOpenModal } = useConnectWallet();
 
   useEffect(() => {

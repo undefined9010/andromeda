@@ -1,7 +1,9 @@
 import { FC } from "react";
 import { PoolType } from "@/components/PoolCardConatiner.tsx";
 
-export const YieldCard: FC<PoolType> = ({ ...props }) => {
+export const YieldCard: FC<
+  Omit<PoolType, "ly_liq" | "ly_amount" | "fy_liq" | "fy_amount">
+> = ({ ...props }) => {
   const { coinName, icon, liquidity } = props;
   return (
     <div className="w-full rounded-lg px-6 py-4 bg-[#6e89e010] backdrop-blur-xs shadow-lg border border-white/20">

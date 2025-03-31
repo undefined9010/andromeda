@@ -8,7 +8,17 @@ type PoolCardProps = {
 };
 
 export const PoolCard: FC<PoolCardProps> = ({ item }) => {
-  const { date, coinName, icon, liquidity, isActive } = item || {};
+  const {
+    date,
+    coinName,
+    icon,
+    liquidity,
+    isActive,
+    ly_liq,
+    ly_amount,
+    fy_liq,
+    fy_amount,
+  } = item || {};
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -42,9 +52,9 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           label="LY"
           labelColor="text-blue-400"
           description="Liberating Yield APY"
-          valueColor="text-red-400"
-          value="-100%"
-          price="$0.02905"
+          valueColor="text-green-400"
+          value={ly_liq}
+          price={ly_amount}
         />
 
         {/* PT Card */}
@@ -53,8 +63,8 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           labelColor="text-green-400"
           description="Fixed Yield APY"
           valueColor="text-green-400"
-          value="13.63%"
-          price="$0.9704"
+          value={fy_liq}
+          price={fy_amount}
         />
       </div>
     </div>
