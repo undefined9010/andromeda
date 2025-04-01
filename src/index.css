@@ -42,6 +42,12 @@
   }
 }
 
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+}
 
 
 @layer utilities {
@@ -49,9 +55,13 @@
     animation: shimmer-slide 1s ease-in-out infinite alternate;
   }
 
+
+
   .animate-spin-around {
     animation: spin-around calc(1s * 2) infinite linear;
   }
+
+
 
   @keyframes glow-dark {
     0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }

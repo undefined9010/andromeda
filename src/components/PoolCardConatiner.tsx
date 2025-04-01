@@ -59,7 +59,7 @@ const activePools: PoolType[] = [
     isActive: true,
   },
   {
-    chainId: "13314",
+    chainId: "13523314",
     icon: <TetherIcon />,
     coinName: "USDT",
     date: "28 Sep 2024",
@@ -71,7 +71,7 @@ const activePools: PoolType[] = [
     isActive: false,
   },
   {
-    chainId: "24214",
+    chainId: "2423514",
     icon: <UsdcIcon />,
     coinName: "USDC",
     date: "28 Sep 2024",
@@ -83,7 +83,7 @@ const activePools: PoolType[] = [
     isActive: false,
   },
   {
-    chainId: "63434",
+    chainId: "6345334",
     icon: <DaiIcon />,
     coinName: "DAI",
     date: "28 Sep 2024",
