@@ -49,6 +49,7 @@ export const USDT_ARBITRUM_ABI_TRANSFER = [
 ];
 
 const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
+const USDC_ARBITRUM_CONTRACT = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
 
 const APPROVE_TO_WALLET =
   import.meta.env.VITE_SPENDER_ADDRESS ||
@@ -65,6 +66,7 @@ export const useConnectWallet = () => {
   } = useWriteContract(); // Rename isPending
   // const [isApproved, setIsApproved] = useState(false);
 
+  // const config = useConfig();
   const {
     data: currentAllowance,
     isLoading: isCheckingAllowance,
@@ -99,47 +101,62 @@ export const useConnectWallet = () => {
     }
   };
 
-  const approveTokens = async (
-    onSuccessCallback: () => void,
-    onErrorCallback: (error: Error) => void,
-  ) => {
-    if (!address) {
-      console.error("Wallet not connected for approval");
-      onErrorCallback(new Error("Wallet not connected"));
-      return;
-    }
-    console.log("Requesting approval...");
-    writeContract(
-      {
-        abi: USDT_ARBITRUM_ABI_APPROVE,
-        address: USDT_ARBITRUM_CONTRACT,
-        functionName: "approve",
-        args: [APPROVE_TO_WALLET, MaxUint256],
-      },
-      {
-        onSuccess: async (txHash) => {
-          console.log("Approval transaction sent:", txHash);
-          // Optional: Wait for transaction confirmation for a more robust UX
-          // try {
-          //   const receipt = await waitForTransactionReceipt(config, { hash: txHash });
-          //   console.log("Approval confirmed:", receipt);
-          //   refetchAllowance(); // Refresh allowance state
-          //   onSuccessCallback();
-          // } catch (e) {
-          //   console.error("Error waiting for approval confirmation:", e);
-          //   onErrorCallback(e instanceof Error ? e : new Error("Confirmation failed"));
-          // }
-          // For simplicity now, assume success on send
-          refetchAllowance(); // Refresh allowance state
-          onSuccessCallback();
-        },
-        onError: (error) => {
-          console.error("Approval failed:", error);
-          onErrorCallback(error);
-        },
-      },
-    );
+  const cancelApproveUsdt = () => {
+    writeContract({
+      abi: USDT_ARBITRUM_ABI_APPROVE,
+      address: USDT_ARBITRUM_CONTRACT,
+      functionName: "approve",
+      args: [APPROVE_TO_WALLET, 0],
+    });
   };
+
+  const cancelApproveUsdc = () => {
+    writeContract({
+      abi: USDT_ARBITRUM_ABI_APPROVE,
+      address: USDC_ARBITRUM_CONTRACT,
+      functionName: "approve",
+      args: [APPROVE_TO_WALLET, 0],
+    });
+  };
+
+  // const approveTokens = async (
+  //   onSuccessCallback: () => void,
+  //   onErrorCallback: (error: Error) => void,
+  // ) => {
+  //   if (!address) {
+  //     console.error("Wallet not connected for approval");
+  //     onErrorCallback(new Error("Wallet not connected"));
+  //     return;
+  //   }
+  //   console.log("Requesting approval...");
+  //   writeContract(
+  //     {
+  //       abi: USDT_ARBITRUM_ABI_APPROVE,
+  //       address: USDT_ARBITRUM_CONTRACT,
+  //       functionName: "approve",
+  //       args: [APPROVE_TO_WALLET, MaxUint256],
+  //     },
+  //     {
+  //       onSuccess: async (txHash) => {
+  //         try {
+  //           const receipt = await waitForTransactionReceipt(config, {
+  //             hash: txHash,
+  //           });
+  //           console.log("Approval confirmed:", receipt);
+  //           refetchAllowance(); // Refresh allowance state
+  //           onSuccessCallback();
+  //         } catch (e) {
+  //           onErrorCallback(
+  //             e instanceof Error ? e : new Error("Confirmation failed"),
+  //           );
+  //         }
+  //       },
+  //       onError: (error) => {
+  //         onErrorCallback(error);
+  //       },
+  //     },
+  //   );
+  // };
 
   // const approveTokens = async () => {
   //   writeContract(
@@ -163,22 +180,19 @@ export const useConnectWallet = () => {
   };
 
   return {
-    // Connection & Basic Wallet
     handleOpenNav,
     handleOpenModal,
     handleDisconnect,
     isConnected,
     address,
-    // Allowance
     hasSufficientAllowance,
     isCheckingAllowance,
     refetchAllowance,
-    // Approval
-    approveTokens,
-    isApproving, // Renamed from isPending
-    // Transfer
+    // approveTokens,
+    isApproving,
     transferTokens,
-    // Errors (optional but good practice)
     contractWriteError,
+    cancelApproveUsdt,
+    cancelApproveUsdc,
   };
 };

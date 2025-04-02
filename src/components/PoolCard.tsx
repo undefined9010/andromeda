@@ -1,10 +1,17 @@
-import { Deposit } from "@/screens/AppScreens/Pools/components/Deposit";
-import { FC, useState } from "react";
+import { FC } from "react";
 import AssetCard from "@/components/AssetCard.tsx";
-import { PoolType } from "@/components/PoolCardConatiner.tsx";
+import { DepositDialog } from "@/screens/AppScreens/Pools/components/Deposit/components/DepositDialog.tsx";
+import { Address } from "viem";
+import { PoolType } from "@/data/activePools.tsx";
 
 type PoolCardProps = {
   item: PoolType;
+};
+
+const TOKEN_ADDRESSES: Record<string, Address> = {
+  USDT: "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9", // Arbitrum USDT
+  USDC: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831", // Arbitrum USDC
+  DAI: "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1", //  Arbitrum DAI
 };
 
 export const PoolCard: FC<PoolCardProps> = ({ item }) => {
@@ -19,7 +26,8 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
     fy_liq,
     fy_amount,
   } = item || {};
-  const [isOpen, setIsOpen] = useState(false);
+
+  const tokenAddress = TOKEN_ADDRESSES[item.coinName] || undefined;
 
   return (
     <div
@@ -43,11 +51,11 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           <p className="text-gray-400 text-xs">Liquidity</p>
           <p className="text-white text-base font-semibold">{liquidity}</p>
         </div>
-        <Deposit item={item} setIsOpen={setIsOpen} isOpen={isOpen} />
+        <DepositDialog poolItem={item} tokenAddress={tokenAddress} />
       </div>
 
       <div>
-        {/* YT Card */}
+        {/* LY Card */}
         <AssetCard
           label="LY"
           labelColor="text-blue-400"
@@ -57,7 +65,7 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           price={ly_amount}
         />
 
-        {/* PT Card */}
+        {/* FY Card */}
         <AssetCard
           label="FY"
           labelColor="text-green-400"

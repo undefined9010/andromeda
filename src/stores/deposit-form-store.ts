@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
-interface YieldsData {
+export interface YieldsData {
   liq: string;
   amount: string;
 }
 
-interface YieldsStore {
+export interface YieldsStore {
   yieldsData: YieldsData | null;
   setYieldsData: (data: YieldsData | null) => void;
 }

@@ -1,33 +1,56 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
 import { createInputList } from "@/components/form";
-import { useGetBalance } from "@/hooks/useGetBalance.ts";
 import { useYieldsStore } from "@/stores/deposit-form-store.ts";
+import { useTokenBalance } from "@/hooks/useTokenBalance.ts";
+import {
+  useErc20Transfer,
+  useTransferTokens,
+} from "@/hooks/useTransferTokens.ts";
 
 const duration = ["1 W", "1 M", "6 M", "1 Y", "4 W"];
 
 const DepositFormSchema = z.object({
-  amount: z.coerce.number().min(1, "Amount must be at least 1"),
+  amount: z.coerce.number().min(0.01, "Amount must be at least 1"),
   duration: z.string().min(1, "Duration must be at least 1"),
 });
 
 type DepositFormType = z.infer<typeof DepositFormSchema>;
 
 const { ControlledInput } = createInputList<DepositFormType>();
+type DepositFormProps = {
+  poolName: string;
+  tokenAddress: `0x${string}` | undefined;
+  decimalsS: number;
+  icon: React.ReactNode;
+};
 
-export const DepositForm = () => {
+export const DepositForm: FC<DepositFormProps> = ({
+  icon,
+  tokenAddress,
+  poolName,
+  decimalsS,
+}) => {
   // const web3 = new Web3(
   //   `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
   // );
 
   const { yieldsData } = useYieldsStore();
+  const { transferToken } = useTransferTokens(tokenAddress, decimalsS);
 
   console.log(yieldsData, "yieldDatra");
 
-  const { formattedUsdtBalance } = useGetBalance();
+  const {
+    formattedBalance,
+    // symbol: fetchedSymbol,
+    // decimals,
+    // isLoading: isLoadingBalance,
+    // error: balanceError,
+  } = useTokenBalance(tokenAddress);
+
   const [selectedPercentage, setSelectedPercentage] = useState<number | null>(
     null,
   );
@@ -44,9 +67,8 @@ export const DepositForm = () => {
   const { setValue, handleSubmit } = methods;
 
   const handleSetAmount = (percentage: number) => {
-    if (formattedUsdtBalance) {
-      const calculatedAmount =
-        (Number(formattedUsdtBalance) * percentage) / 100;
+    if (formattedBalance) {
+      const calculatedAmount = (Number(formattedBalance) * percentage) / 100;
       setValue("amount", Number(calculatedAmount.toFixed(2)));
       setSelectedPercentage(percentage);
     }
@@ -57,9 +79,7 @@ export const DepositForm = () => {
     setValue("duration", duration);
   };
 
-  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {
-    console.log(data, "data");
-  };
+  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {};
 
   return (
     <FormProvider {...methods}>
@@ -71,11 +91,12 @@ export const DepositForm = () => {
 
           <ControlledInput
             control={methods.control}
+            icon={icon}
             name="amount"
             type="number"
-            symbol="USDT"
-            maxValue={Number(formattedUsdtBalance)}
-            balance={formattedUsdtBalance ?? ""}
+            symbol={poolName}
+            maxValue={Number(formattedBalance)}
+            balance={formattedBalance ?? ""}
             placeholder="Enter amount of tokens"
           />
 

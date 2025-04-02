@@ -1,16 +1,13 @@
-import { Button } from "@/components/ui/button.tsx";
-import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
-
 export const AppScreens = () => {
-  const { handleOpenModal, handleOpenNav, approveTokens } = useConnectWallet();
+  // const { handleOpenModal, handleOpenNav, approveTokens } = useConnectWallet();
 
   return (
     <div>
       {/* Button to trigger wallet modal */}
-      <Button onClick={approveTokens}>Approve tokens</Button>
-      <Button onClick={handleOpenModal}>Open Wallet</Button>
+      {/*<Button onClick={approveTokens}>Approve tokens</Button>*/}
+      {/*<Button onClick={handleOpenModal}>Open Wallet</Button>*/}
       {/* Other buttons */}
-      <Button onClick={handleOpenNav}>Nav</Button>
+      {/*<Button onClick={handleOpenNav}>Nav</Button>*/}
     </div>
   );
 };

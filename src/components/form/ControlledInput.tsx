@@ -5,9 +5,8 @@ import {
   useController,
 } from "react-hook-form";
 import * as Form from "@radix-ui/react-form";
-import UsdtIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
 
-import { ChangeEvent, ReactElement } from "react";
+import { ChangeEvent, ReactElement, ReactNode } from "react";
 
 export type InputFormProps<
   TFieldValuesType extends FieldValues = FieldValues,
@@ -23,6 +22,7 @@ export type InputFormProps<
   error?: string;
   balance?: string | undefined;
   symbol?: string;
+  icon?: ReactNode;
   maxValue?: number;
   noIcon?: boolean;
 };
@@ -45,6 +45,7 @@ export const Input = <
     maxValue,
     type,
     noIcon,
+    icon,
   } = props;
 
   const { field } = useController({
@@ -69,10 +70,11 @@ export const Input = <
       <Form.Control asChild>
         <div className="border w-full border-gray-600 h-12 rounded-lg flex items-center justify-between">
           {!noIcon && (
-            <span className="pl-2 pr-5 flex-shrink-0">
-              <UsdtIcon width={24} height={24} />
+            <span className="h-6 w-6 ml-2 rounded-full flex items-center justify-center shrink-0">
+              {icon}
             </span>
           )}
+
           <input
             {...field}
             value={field.value || ""}
@@ -80,7 +82,7 @@ export const Input = <
             placeholder={placeholder}
             autoComplete="off"
             type={type}
-            className={`${noIcon ? "px-6" : "none"} focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100`}
+            className={`${noIcon ? "px-6" : "none"} px-2 focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100`}
             onChange={handleChange}
           />
           {balance && !noIcon && (
