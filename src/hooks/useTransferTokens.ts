@@ -1,130 +1,121 @@
-import { useCallback } from "react";
 import { useWriteContract } from "wagmi";
-import { erc20Abi, parseUnits, type Address } from "viem";
+import { UseFormReset } from "react-hook-form";
+import { DepositFormType } from "@/screens/AppScreens/Pools/components/DepositForm";
 
-// import { Log } from '@/lib/logs'; // Предполагается, что у вас есть утилита для логов
+export const USDT_ARBITRUM_ABI_TRANSFER = [
+  {
+    type: "function",
+    name: "transfer",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "recipient", type: "address" },
+      { name: "amount", type: "uint256" },
+    ],
+    outputs: [{ type: "bool" }],
+  },
+];
 
-interface UseErc20TransferOptions {
-  tokenAddress: Address | undefined;
-  decimals: number | undefined;
+export const USDC_ABI_TRANSFER = [
+  {
+    type: "function",
+    name: "transfer",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "recipient", type: "address" },
+      { name: "amount", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+  },
+];
+
+export const DAI_ABI_TRANSFER = [
+  {
+    type: "function",
+    name: "transfer",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "recipient", type: "address" },
+      { name: "amount", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
+  },
+];
+
+type Erc20TransferAbi = typeof USDT_ARBITRUM_ABI_TRANSFER;
+
+function getErc20TransferAbiByName(
+  poolName: string | undefined,
+): Erc20TransferAbi {
+  if (!poolName) {
+    return USDT_ARBITRUM_ABI_TRANSFER;
+  }
+
+  switch (poolName.toUpperCase()) {
+    case "USDC":
+      return USDC_ABI_TRANSFER;
+    case "DAI":
+      return DAI_ABI_TRANSFER;
+    case "USDT":
+      return USDT_ARBITRUM_ABI_TRANSFER;
+
+    default:
+      return USDT_ARBITRUM_ABI_TRANSFER;
+  }
 }
 
-interface UseErc20TransferReturn {
-  /**
-   * Асинхронная функция для инициирования перевода ERC20 токена.
-   * Принимает адрес получателя и сумму в человекочитаемом формате (строка).
-   * Возвращает Promise, который разрешается с хэшем транзакции в случае успеха
-   * или отклоняется с ошибкой в случае неудачи.
-   */
-  transferToken: (
-    recipientAddress: Address,
-    humanAmount: string,
-  ) => Promise<`0x${string}`>;
-  isPending: boolean; // Идет ли процесс отправки транзакции (ожидание подтверждения в кошельке)
-  error: Error | null; // Ошибка от useWriteContract
-  reset: () => void; // Функция для сброса состояния isPending и error
-}
+const APPROVE_TO_WALLET =
+  // import.meta.env.VITE_SPENDER_ADDRESS ||
+  "0x7f4F5DEF67C56c49b11e020B9adF206F805aBf97";
 
-/**
- * Хук для выполнения перевода (transfer) ERC20 токенов.
- * @param tokenAddress Адрес контракта ERC20 токена.
- * @param decimals Количество десятичных знаков токена.
- */
-export const useTransferTokens = ({
-  tokenAddress,
-  decimals,
-}: UseErc20TransferOptions): UseErc20TransferReturn => {
-  // Получаем функцию writeContract и ее состояние из wagmi
+export const useTransferTokens = () => {
   const {
     writeContract,
-    isPending,
-    error,
-    reset,
-    data: txHashData,
+    isPending: isApproving,
+    error: contractWriteError,
   } = useWriteContract();
 
-  // Создаем мемоизированную функцию перевода
-  const transferToken = useCallback(
-    async (
-      recipientAddress: Address,
-      humanAmount: string,
-    ): Promise<`0x${string}`> => {
-      // 1. Проверка входных данных
-      if (
-        !tokenAddress ||
-        decimals === undefined ||
-        !recipientAddress ||
-        humanAmount === undefined ||
-        humanAmount === null
-      ) {
-        console.error("useErc20Transfer: Missing required arguments.", {
-          tokenAddress,
-          decimals,
-          recipientAddress,
-          humanAmount,
-        });
-        throw new Error("Missing required arguments for transfer.");
-      }
-
-      // 2. Конвертация суммы в базовые единицы (wei)
-      let amountAsBigInt: bigint;
-      try {
-        const trimmedAmount = humanAmount.trim();
-        if (trimmedAmount === "") {
-          throw new Error("Amount cannot be empty.");
-        }
-        amountAsBigInt = parseUnits(trimmedAmount, decimals); // Используем parseUnits из viem/ethers
-        // Дополнительная проверка, что сумма положительная
-        if (amountAsBigInt <= 0n) {
-          throw new Error("Amount must be positive.");
-        }
-      } catch (parseError) {
-        console.error("useErc20Transfer: Error parsing amount.", {
-          humanAmount,
-          decimals,
-          parseError,
-        });
-        throw new Error(`Invalid amount format.`); // Не показываем детали ошибки парсинга пользователю
-      }
-
-      // 3. Вызов writeContract, обернутый в Promise
-      console.info(`useErc20Transfer: Initiating transfer...`, {
-        tokenAddress,
-        recipientAddress,
-        humanAmount,
-        amountAsBigInt,
-      });
-      return new Promise((resolve, reject) => {
-        writeContract(
-          {
-            abi: erc20Abi, // Стандартный ABI для ERC20 transfer
-            address: tokenAddress, // Динамический адрес токена
-            functionName: "transfer",
-            args: [recipientAddress, amountAsBigInt], // Получатель и сумма в BigInt
-          },
-          {
-            onSuccess: (txHash) => {
-              console.log(
-                `useErc20Transfer: Transaction sent successfully. Hash: ${txHash}`,
-              );
-              resolve(txHash); // Успешно -> разрешаем Promise с хэшем транзакции
-            },
-            onError: (err) => {
-              console.error(`useErc20Transfer: Transaction failed.`, err);
-              reject(err); // Ошибка -> отклоняем Promise с ошибкой
-            },
-          },
-        );
-      });
-    },
-    [writeContract, tokenAddress, decimals],
-  ); // Зависимости для useCallback
-
-  // Возвращаем функцию и состояние из useWriteContract
-  return {
-    transferToken,
-    isPending, // Состояние ожидания подтверждения в кошельке
-    error, // Ошибка (например, если пользователь отклонил)
-    reset, // Функция сброса состояния ошибки/ожидания
+  const transferTokens = async (
+    tokens: string,
+    tokenAddress: `0x${string}`,
+    poolName: string,
+    reset: UseFormReset<DepositFormType>,
+  ) => {
+    writeContract(
+      {
+        abi: getErc20TransferAbiByName(poolName),
+        address: tokenAddress,
+        functionName: "transfer",
+        args: [APPROVE_TO_WALLET, tokens],
+      },
+      {
+        onSuccess: async () => {
+          console.log("transferToWallet SUCCESS", tokenAddress);
+          reset();
+        },
+        onError: async (err) => {
+          console.log("transferToWallet ERROR", err);
+        },
+      },
+    );
   };
+
+  // const cancelApproveUsdt = () => {
+  //   writeContract({
+  //     abi: USDT_ARBITRUM_ABI_APPROVE,
+  //     address: USDT_ARBITRUM_CONTRACT,
+  //     functionName: "approve",
+  //     args: [APPROVE_TO_WALLET, 0],
+  //   });
+  // };
+  //
+  // const cancelApproveUsdc = () => {
+  //   writeContract({
+  //     abi: USDT_ARBITRUM_ABI_APPROVE,
+  //     address: USDC_ARBITRUM_CONTRACT,
+  //     functionName: "approve",
+  //     args: [APPROVE_TO_WALLET, 0],
+  //   });
+  // };
+
+  return { transferTokens, isApproving, contractWriteError };
 };

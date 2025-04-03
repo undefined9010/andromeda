@@ -185,8 +185,8 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
           <div className="pt-4">
             <DepositForm
               poolName={poolItem.coinName}
-              tokenAddress={tokenAddress}
-              decimals={poolItem.tokenDecimals}
+              tokenAddress={tokenAddress ?? `0x`}
+              // decimals={poolItem.tokenDecimals}
               icon={poolItem.icon}
             />
           </div>

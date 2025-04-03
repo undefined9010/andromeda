@@ -1,15 +1,13 @@
-import { FC, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import * as Form from "@radix-ui/react-form";
 import { createInputList } from "@/components/form";
-import { useYieldsStore } from "@/stores/deposit-form-store.ts";
 import { useTokenBalance } from "@/hooks/useTokenBalance.ts";
-import {
-  useErc20Transfer,
-  useTransferTokens,
-} from "@/hooks/useTransferTokens.ts";
+import { Web3 } from "web3";
+import { useTransferTokens } from "@/hooks/useTransferTokens.ts";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button.tsx";
 
 const duration = ["1 W", "1 M", "6 M", "1 Y", "4 W"];
 
@@ -18,36 +16,32 @@ const DepositFormSchema = z.object({
   duration: z.string().min(1, "Duration must be at least 1"),
 });
 
-type DepositFormType = z.infer<typeof DepositFormSchema>;
+export type DepositFormType = z.infer<typeof DepositFormSchema>;
 
 const { ControlledInput } = createInputList<DepositFormType>();
+
 type DepositFormProps = {
   poolName: string;
-  tokenAddress: `0x${string}` | undefined;
-  decimalsS: number;
-  icon: React.ReactNode;
+  tokenAddress: `0x${string}`;
+  icon: ReactNode;
 };
 
 export const DepositForm: FC<DepositFormProps> = ({
   icon,
   tokenAddress,
   poolName,
-  decimalsS,
 }) => {
-  // const web3 = new Web3(
-  //   `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
-  // );
-
-  const { yieldsData } = useYieldsStore();
-  const { transferToken } = useTransferTokens(tokenAddress, decimalsS);
-
-  console.log(yieldsData, "yieldDatra");
+  const web3 = new Web3(
+    `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+  );
+  const { transferTokens, isApproving } = useTransferTokens();
+  // const { yieldsData } = useYieldsStore();
 
   const {
     formattedBalance,
     // symbol: fetchedSymbol,
     // decimals,
-    // isLoading: isLoadingBalance,
+    isLoading: isLoadingBalance,
     // error: balanceError,
   } = useTokenBalance(tokenAddress);
 
@@ -64,7 +58,7 @@ export const DepositForm: FC<DepositFormProps> = ({
     },
   });
 
-  const { setValue, handleSubmit } = methods;
+  const { setValue, handleSubmit, reset } = methods;
 
   const handleSetAmount = (percentage: number) => {
     if (formattedBalance) {
@@ -79,7 +73,11 @@ export const DepositForm: FC<DepositFormProps> = ({
     setValue("duration", duration);
   };
 
-  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {};
+  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {
+    const tokenAmount = web3.utils.toWei(data.amount, "mwei");
+
+    await transferTokens(tokenAmount, tokenAddress, poolName, reset);
+  };
 
   return (
     <FormProvider {...methods}>
@@ -98,6 +96,7 @@ export const DepositForm: FC<DepositFormProps> = ({
             maxValue={Number(formattedBalance)}
             balance={formattedBalance ?? ""}
             placeholder="Enter amount of tokens"
+            isLoadingBalance={isLoadingBalance}
           />
 
           {methods.formState.errors.amount && (
@@ -158,9 +157,14 @@ export const DepositForm: FC<DepositFormProps> = ({
         </div>
 
         <Form.Submit asChild>
-          <button className="bg-teal-500 w-full text-white px-4 py-2 rounded mt-3">
-            Submit
-          </button>
+          <InteractiveHoverButton
+            isLoading={isApproving}
+            className="bg-teal-500 w-full text-white px-4 py-2 rounded-md mt-3"
+            text="Transfer"
+          />
+          {/*<button className="bg-teal-500 w-full text-white px-4 py-2 rounded mt-3">*/}
+          {/*  Submit*/}
+          {/*</button>*/}
         </Form.Submit>
       </Form.Root>
     </FormProvider>

@@ -62,7 +62,7 @@ export const activePools: PoolType[] = [
     ly_liq: "240%",
     ly_amount: "$0.4504",
     fy_liq: "194%",
-    fy_amount: "0.8421", // Убран '$'
+    fy_amount: "0.8421",
     isActive: true,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["USDC"],
     tokenSymbol: TOKEN_DETAILS["USDC"].symbol,

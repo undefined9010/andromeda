@@ -7,6 +7,7 @@ import {
 import * as Form from "@radix-ui/react-form";
 
 import { ChangeEvent, ReactElement, ReactNode } from "react";
+import { CustomLoader } from "@/components/CustomLoader.tsx";
 
 export type InputFormProps<
   TFieldValuesType extends FieldValues = FieldValues,
@@ -25,6 +26,7 @@ export type InputFormProps<
   icon?: ReactNode;
   maxValue?: number;
   noIcon?: boolean;
+  isLoadingBalance?: boolean;
 };
 
 export const Input = <
@@ -45,6 +47,7 @@ export const Input = <
     maxValue,
     type,
     noIcon,
+    isLoadingBalance,
     icon,
   } = props;
 
@@ -85,11 +88,15 @@ export const Input = <
             className={`${noIcon ? "px-6" : "none"} px-2 focus:outline-none w-full focus:ring-0 focus:border-transparent text-green-100`}
             onChange={handleChange}
           />
-          {balance && !noIcon && (
-            <span className="w-full text-gray-500 text-xs line-clamp-1 text-right pr-2">
-              balance: {balance ?? 0} {symbol}
-            </span>
-          )}
+          {balance &&
+            !noIcon &&
+            (isLoadingBalance ? (
+              <CustomLoader />
+            ) : (
+              <span className="w-full text-gray-500 text-xs line-clamp-1 text-right pr-2 ">
+                balance: {balance ?? "0.00"} {symbol}
+              </span>
+            ))}
         </div>
       </Form.Control>
     </Form.Field>

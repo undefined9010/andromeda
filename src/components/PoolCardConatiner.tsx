@@ -8,8 +8,7 @@ import { activePools } from "@/data/activePools.tsx";
 
 export const PoolCardContainer = () => {
   const { isConnected } = useAccount();
-  const { handleOpenModal, cancelApproveUsdc, cancelApproveUsdt } =
-    useConnectWallet();
+  const { handleOpenModal } = useConnectWallet();
 
   useEffect(() => {
     if (!isConnected) {
@@ -21,8 +20,6 @@ export const PoolCardContainer = () => {
       document.body.style.overflow = "";
     };
   }, [isConnected]);
-
-  const poolsToDisplay = activePools.filter((pool) => pool.isActive);
 
   return (
     <div className="relative h-full z-20">
@@ -46,7 +43,7 @@ export const PoolCardContainer = () => {
       >
         <div className="block h-full sm:hidden overflow-y-auto pb-[100px]">
           <div className="flex flex-col gap-4 p-4 pb-6 min-h-screen">
-            {poolsToDisplay.map((item, index) => (
+            {activePools.map((item, index) => (
               <motion.div
                 key={`${item.chainId}-${item.coinName}-${index}`} // Более уникальный ключ
                 initial={{ opacity: 0, y: 50 }}
@@ -64,7 +61,7 @@ export const PoolCardContainer = () => {
         </div>
 
         <div className="hidden sm:grid h-full overflow-y-hidden sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 ">
-          {poolsToDisplay.map((item, index) => (
+          {activePools.map((item, index) => (
             <motion.div
               key={`${item.chainId}-${item.coinName}-${index}`} // Более уникальный ключ
               initial={{ opacity: 0, y: 100 }}
@@ -79,15 +76,6 @@ export const PoolCardContainer = () => {
               <PoolCard item={item} />
             </motion.div>
           ))}
-        </div>
-
-        <div className="flex gap-8 p-6">
-          <button className="text-white" onClick={cancelApproveUsdc}>
-            Cancel USDC Approval
-          </button>
-          <button className="text-white" onClick={cancelApproveUsdt}>
-            Cancel USDT Approval
-          </button>
         </div>
       </div>
     </div>
