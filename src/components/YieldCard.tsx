@@ -1,8 +1,18 @@
 import { FC } from "react";
-import { PoolType } from "@/components/PoolCardConatiner.tsx";
+import { PoolType } from "@/data/activePools.tsx";
 
 export const YieldCard: FC<
-  Omit<PoolType, "ly_liq" | "ly_amount" | "fy_liq" | "fy_amount">
+  Omit<
+    PoolType,
+    | "ly_liq"
+    | "ly_amount"
+    | "fy_liq"
+    | "fy_amount"
+    | "tokenAddress"
+    | "tokenId"
+    | "tokenSymbol"
+    | "tokenDecimals"
+  >
 > = ({ ...props }) => {
   const { coinName, icon, liquidity } = props;
   return (
