@@ -3,6 +3,7 @@ import {
   useAccount,
   useConfig,
   useReadContract,
+  useSwitchChain,
   useWriteContract,
 } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
@@ -13,6 +14,7 @@ interface UseTokenApprovalProps {
   tokenAddress?: Address;
   spenderAddress?: Address;
   amountToApprove?: bigint;
+  targetChainId?: number;
 }
 
 interface UseTokenApprovalReturn {
@@ -33,9 +35,16 @@ export const useTokenApproval = ({
   tokenAddress,
   spenderAddress,
   amountToApprove = MaxUint256,
+  targetChainId,
 }: UseTokenApprovalProps): UseTokenApprovalReturn => {
   const config = useConfig();
-  const { address: accountAddress, isConnected } = useAccount();
+  const {
+    address: accountAddress,
+    isConnected,
+    chainId: connectedChainId,
+  } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
+
   const [error, setError] = useState<string | null>(null);
   const [internalIsApproved, setInternalIsApproved] = useState<
     boolean | undefined
@@ -104,6 +113,34 @@ export const useTokenApproval = ({
         setError(err.message);
         callbacks.onError(err);
         return;
+      }
+
+      if (connectedChainId !== targetChainId) {
+        try {
+          if (!switchChainAsync) {
+            throw new Error("Switch chain function not available.");
+          }
+          // Prompt user to switch
+          await switchChainAsync({ chainId: Number(targetChainId) });
+          // After successful switch, wagmi should reconnect and update connectedChainId,
+          // but we might proceed optimistically or add a small delay/refetch state.
+          // For now, proceed directly.
+        } catch (switchError) {
+          // Handle errors: user rejection, unsupported chain, etc.
+
+          const err = new Error(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-expect-error
+            switchError?.shortMessage ??
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
+              switchError?.message ??
+              "Failed to switch network. Please switch manually in your wallet.",
+          );
+          setError(err.message);
+          callbacks.onError(err);
+          return;
+        }
       }
 
       try {
@@ -179,6 +216,9 @@ export const useTokenApproval = ({
       writeContract,
       config,
       resetError,
+      connectedChainId,
+      targetChainId,
+      switchChainAsync,
     ],
   );
 

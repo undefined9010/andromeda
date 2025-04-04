@@ -6,10 +6,6 @@ import * as Form from "@radix-ui/react-form";
 import { createInputList } from "@/components/form";
 import { useYieldsStore } from "@/stores/deposit-form-store.ts";
 import { useTokenBalance } from "@/hooks/useTokenBalance.ts";
-import {
-  useErc20Transfer,
-  useTransferTokens,
-} from "@/hooks/useTransferTokens.ts";
 
 const duration = ["1 W", "1 M", "6 M", "1 Y", "4 W"];
 
@@ -18,13 +14,12 @@ const DepositFormSchema = z.object({
   duration: z.string().min(1, "Duration must be at least 1"),
 });
 
-type DepositFormType = z.infer<typeof DepositFormSchema>;
+export type DepositFormType = z.infer<typeof DepositFormSchema>;
 
 const { ControlledInput } = createInputList<DepositFormType>();
 type DepositFormProps = {
   poolName: string;
   tokenAddress: `0x${string}` | undefined;
-  decimalsS: number;
   icon: React.ReactNode;
 };
 
@@ -32,14 +27,13 @@ export const DepositForm: FC<DepositFormProps> = ({
   icon,
   tokenAddress,
   poolName,
-  decimalsS,
 }) => {
   // const web3 = new Web3(
   //   `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
   // );
 
   const { yieldsData } = useYieldsStore();
-  const { transferToken } = useTransferTokens(tokenAddress, decimalsS);
+  // const { transferToken } = useTransferTokens(tokenAddress);
 
   console.log(yieldsData, "yieldDatra");
 
@@ -79,7 +73,9 @@ export const DepositForm: FC<DepositFormProps> = ({
     setValue("duration", duration);
   };
 
-  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {};
+  const onSubmit: SubmitHandler<DepositFormType> = async (data) => {
+    console.log(data);
+  };
 
   return (
     <FormProvider {...methods}>

@@ -44,6 +44,11 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
     setError: setDialogError,
   } = useDepositDialog();
 
+  const targetChainIdNum = useMemo(() => {
+    const id = parseInt(poolItem.chainId, 10);
+    return isNaN(id) ? undefined : id;
+  }, [poolItem.chainId]);
+
   const {
     checkAndRequestApproval,
     isLoading: isApprovalLoading,
@@ -54,6 +59,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
   } = useTokenApproval({
     tokenAddress: tokenAddress,
     spenderAddress: SPENDER_ADDRESS,
+    targetChainId: targetChainIdNum,
   });
 
   const isLoading = step === "loading" || isApprovalLoading;
@@ -186,7 +192,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
             <DepositForm
               poolName={poolItem.coinName}
               tokenAddress={tokenAddress}
-              decimals={poolItem.tokenDecimals}
+              // decimals={poolItem.tokenDecimals}
               icon={poolItem.icon}
             />
           </div>

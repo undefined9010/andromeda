@@ -3,10 +3,10 @@ import useMediaQuery from "@/hooks/useMediaQuery.ts";
 import { Link } from "react-router";
 import { RoutePaths } from "@/router/routes.ts";
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
-import { PoolType } from "@/components/PoolCardConatiner.tsx";
 import TetherIcon from "@/assets/coinIcons/tether-usdt-logo.svg?react";
 import UsdcIcon from "@/assets/coinIcons/usdc-logo.svg?react";
 import DaiIcon from "@/assets/coinIcons/dai-logo.svg?react";
+import { PoolType } from "@/data/activePools.tsx";
 
 export const YieldContainer = () => {
   const isMobile = useMediaQuery("(max-width: 640px)");
@@ -14,7 +14,14 @@ export const YieldContainer = () => {
 
   const cards: Omit<
     PoolType,
-    "ly_liq" | "ly_amount" | "fy_liq" | "fy_amount"
+    | "ly_liq"
+    | "ly_amount"
+    | "fy_liq"
+    | "fy_amount"
+    | "tokenAddress"
+    | "tokenId"
+    | "tokenSymbol"
+    | "tokenDecimals"
   >[] = [
     {
       chainId: "13314",

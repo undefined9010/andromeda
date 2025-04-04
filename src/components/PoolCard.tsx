@@ -51,7 +51,9 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           <p className="text-gray-400 text-xs">Liquidity</p>
           <p className="text-white text-base font-semibold">{liquidity}</p>
         </div>
-        <DepositDialog poolItem={item} tokenAddress={tokenAddress} />
+        {isActive && (
+          <DepositDialog poolItem={item} tokenAddress={tokenAddress} />
+        )}
       </div>
 
       <div>

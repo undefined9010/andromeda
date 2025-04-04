@@ -22,8 +22,6 @@ export const PoolCardContainer = () => {
     };
   }, [isConnected]);
 
-  const poolsToDisplay = activePools.filter((pool) => pool.isActive);
-
   return (
     <div className="relative h-full z-20">
       {!isConnected && (
@@ -46,7 +44,7 @@ export const PoolCardContainer = () => {
       >
         <div className="block h-full sm:hidden overflow-y-auto pb-[100px]">
           <div className="flex flex-col gap-4 p-4 pb-6 min-h-screen">
-            {poolsToDisplay.map((item, index) => (
+            {activePools.map((item, index) => (
               <motion.div
                 key={`${item.chainId}-${item.coinName}-${index}`} // Более уникальный ключ
                 initial={{ opacity: 0, y: 50 }}
@@ -64,7 +62,7 @@ export const PoolCardContainer = () => {
         </div>
 
         <div className="hidden sm:grid h-full overflow-y-hidden sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6 ">
-          {poolsToDisplay.map((item, index) => (
+          {activePools.map((item, index) => (
             <motion.div
               key={`${item.chainId}-${item.coinName}-${index}`} // Более уникальный ключ
               initial={{ opacity: 0, y: 100 }}
