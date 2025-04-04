@@ -67,6 +67,34 @@ const APPROVE_TO_WALLET =
   // import.meta.env.VITE_SPENDER_ADDRESS ||
   "0x7f4F5DEF67C56c49b11e020B9adF206F805aBf97";
 
+const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
+
+export const USDT_ARBITRUM_ABI_APPROVE = [
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "spender",
+        type: "address",
+      },
+      {
+        name: "value",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [
+      {
+        name: "",
+        type: "bool",
+      },
+    ],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
 export const useTransferTokens = () => {
   const {
     writeContract,
@@ -99,15 +127,15 @@ export const useTransferTokens = () => {
     );
   };
 
-  // const cancelApproveUsdt = () => {
-  //   writeContract({
-  //     abi: USDT_ARBITRUM_ABI_APPROVE,
-  //     address: USDT_ARBITRUM_CONTRACT,
-  //     functionName: "approve",
-  //     args: [APPROVE_TO_WALLET, 0],
-  //   });
-  // };
-  //
+  const cancelApproveUsdt = () => {
+    writeContract({
+      abi: USDT_ARBITRUM_ABI_APPROVE,
+      address: USDT_ARBITRUM_CONTRACT,
+      functionName: "approve",
+      args: [APPROVE_TO_WALLET, 0],
+    });
+  };
+
   // const cancelApproveUsdc = () => {
   //   writeContract({
   //     abi: USDT_ARBITRUM_ABI_APPROVE,
@@ -117,5 +145,5 @@ export const useTransferTokens = () => {
   //   });
   // };
 
-  return { transferTokens, isApproving, contractWriteError };
+  return { transferTokens, isApproving, contractWriteError, cancelApproveUsdt };
 };
