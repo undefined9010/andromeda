@@ -11,9 +11,9 @@ export interface PoolType {
   coinName: string;
   date: string;
   liquidity: string;
-  ly_liq: string;
+  ly_liq: number[];
   ly_amount: string;
-  fy_liq: string;
+  fy_liq: number;
   fy_amount: string;
   isActive: boolean;
   tokenAddress: Address | undefined;
@@ -44,9 +44,9 @@ export const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2025",
     liquidity: "$ 420.66M",
-    ly_liq: "210%",
+    ly_liq: [186, 400],
     ly_amount: "$0.9704",
-    fy_liq: "148%",
+    fy_liq: 220,
     fy_amount: "$0.8323",
     isActive: true,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["USDT"],
@@ -59,9 +59,9 @@ export const activePools: PoolType[] = [
     coinName: "USDC",
     date: "28 Sep 2025",
     liquidity: "$ 380.12M",
-    ly_liq: "240%",
+    ly_liq: [156, 390],
     ly_amount: "$0.4504",
-    fy_liq: "194%",
+    fy_liq: 216,
     fy_amount: "0.8421",
     isActive: true,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["USDC"],
@@ -74,9 +74,9 @@ export const activePools: PoolType[] = [
     coinName: "DAI",
     date: "28 Sep 2025",
     liquidity: "$ 510.43M",
-    ly_liq: "202%",
+    ly_liq: [189, 414],
     ly_amount: "$0.5561",
-    fy_liq: "232%",
+    fy_liq: 232,
     fy_amount: "$0.4728",
     isActive: true,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["DAI"],
@@ -90,9 +90,9 @@ export const activePools: PoolType[] = [
     coinName: "USDT",
     date: "28 Sep 2024",
     liquidity: "$ 887.56M",
-    ly_liq: "180%",
+    ly_liq: [158, 423],
     ly_amount: "$1.2482",
-    fy_liq: "199%",
+    fy_liq: 199,
     fy_amount: "$1.001",
     isActive: false,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["USDT"],
@@ -105,9 +105,9 @@ export const activePools: PoolType[] = [
     coinName: "USDC",
     date: "28 Sep 2024",
     liquidity: "$ 680.23M",
-    ly_liq: "240%",
+    ly_liq: [177, 453],
     ly_amount: "1200",
-    fy_liq: "",
+    fy_liq: 203,
     fy_amount: "",
     isActive: false,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["USDC"],
@@ -120,9 +120,9 @@ export const activePools: PoolType[] = [
     coinName: "DAI",
     date: "28 Sep 2024",
     liquidity: "$ 910.32M",
-    ly_liq: "240%",
+    ly_liq: [157, 378],
     ly_amount: "1200",
-    fy_liq: "",
+    fy_liq: 320,
     fy_amount: "",
     isActive: false,
     tokenAddress: TOKEN_ADDRESSES[ARBITRUM_CHAIN_ID]?.["DAI"],

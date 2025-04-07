@@ -11,10 +11,11 @@ import {
 import { DepositForm } from "@/screens/AppScreens/Pools/components/DepositForm";
 import { useTokenApproval } from "@/hooks/useTokenApproval";
 import { useDepositDialog } from "@/hooks/useDepositDialog";
-import { YieldData, YieldSelectionView } from "./YieldSelectionView";
+import { YieldSelectionView } from "./YieldSelectionView";
 import LoaderOne from "@/components/ui/loader-one";
 import type { Address } from "viem";
 import { PoolType } from "@/data/activePools.tsx";
+import { YieldsData } from "@/stores/deposit-form-store.ts";
 
 const SPENDER_ADDRESS = (import.meta.env.VITE_SPENDER_ADDRESS ||
   "0x17E332631Eab05d8037B38c1b6BE784bd638B931") as Address;
@@ -94,7 +95,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
   ]);
 
   const handleYieldSelect = useCallback(
-    (yieldData: YieldData) => {
+    (yieldData: YieldsData) => {
       setSelectedYieldData(yieldData);
       setStep("form");
     },
@@ -186,7 +187,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
             <DepositForm
               poolName={poolItem.coinName}
               tokenAddress={tokenAddress ?? `0x`}
-              // decimals={poolItem.tokenDecimals}
+              item={selectedYieldData}
               icon={poolItem.icon}
             />
           </div>

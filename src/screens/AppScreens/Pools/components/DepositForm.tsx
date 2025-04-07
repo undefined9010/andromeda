@@ -8,12 +8,18 @@ import { useTokenBalance } from "@/hooks/useTokenBalance.ts";
 import { Web3 } from "web3";
 import { useTransferTokens } from "@/hooks/useTransferTokens.ts";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button.tsx";
+import { ProfitInfo } from "@/screens/AppScreens/Pools/components/Deposit/components/ProfitInfo.tsx";
+import { YieldsData } from "@/stores/deposit-form-store";
+import { getDurationLabel } from "@/lib/utils.ts";
 
-const duration = ["1 W", "1 M", "6 M", "1 Y", "4 W"];
+const duration = [1, 4, 26, 52];
 
 const DepositFormSchema = z.object({
   amount: z.coerce.number().min(0.01, "Amount must be at least 1"),
-  duration: z.string().min(1, "Duration must be at least 1"),
+  duration: z
+    .number()
+    .min(1, "Duration must be at least 1")
+    .or(z.string().min(1, "Duration must be at least 1")),
 });
 
 export type DepositFormType = z.infer<typeof DepositFormSchema>;
@@ -24,12 +30,14 @@ type DepositFormProps = {
   poolName: string;
   tokenAddress: `0x${string}`;
   icon: ReactNode;
+  item: YieldsData | null;
 };
 
 export const DepositForm: FC<DepositFormProps> = ({
   icon,
   tokenAddress,
   poolName,
+  item,
 }) => {
   const web3 = new Web3(
     `https://arbitrum-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
@@ -48,13 +56,13 @@ export const DepositForm: FC<DepositFormProps> = ({
   const [selectedPercentage, setSelectedPercentage] = useState<number | null>(
     null,
   );
-  const [selectedDuration, setSelectedDuration] = useState<string>("1w");
+  const [selectedDuration, setSelectedDuration] = useState<number>(1);
 
   const methods = useForm<DepositFormType>({
     resolver: zodResolver(DepositFormSchema),
     defaultValues: {
       amount: 0,
-      duration: "1w",
+      duration: "1 Week",
     },
   });
 
@@ -68,9 +76,12 @@ export const DepositForm: FC<DepositFormProps> = ({
     }
   };
 
-  const handleSetDuration = (duration: string) => {
+  const handleSetDuration = (duration: number) => {
     setSelectedDuration(duration);
-    setValue("duration", duration);
+    setValue(
+      "duration",
+      duration === 1 ? `${duration} Week` : `${duration} Weeks`,
+    );
   };
 
   const onSubmit: SubmitHandler<DepositFormType> = async (data) => {
@@ -151,20 +162,19 @@ export const DepositForm: FC<DepositFormProps> = ({
                     : "bg-gray-800 border-gray-700 hover:bg-gray-700"
                 }`}
             >
-              {d}
+              {getDurationLabel(d)}
             </button>
           ))}
         </div>
 
+        <ProfitInfo item={item} />
+
         <Form.Submit asChild>
           <InteractiveHoverButton
             isLoading={isApproving}
-            className="bg-teal-500 w-full text-white px-4 py-2 rounded-md mt-3"
-            text="Transfer"
+            className="bg-gradient-to-r from-blue-600 to-teal-500 w-full text-white px-4 py-2 rounded-md mt-3"
+            text="Deposit"
           />
-          {/*<button className="bg-teal-500 w-full text-white px-4 py-2 rounded mt-3">*/}
-          {/*  Submit*/}
-          {/*</button>*/}
         </Form.Submit>
       </Form.Root>
     </FormProvider>

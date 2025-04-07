@@ -1,8 +1,10 @@
 import { create } from "zustand";
 
 export interface YieldsData {
-  liq: string;
+  liq: string | number[] | number | string[];
   amount: string;
+  type: "LY" | "FY";
+  coinName: string;
 }
 
 export interface YieldsStore {

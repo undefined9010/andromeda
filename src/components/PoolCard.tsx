@@ -63,7 +63,7 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           labelColor="text-blue-400"
           description="Liberating Yield APY"
           valueColor="text-green-400"
-          value={ly_liq}
+          value={`${ly_liq[0]}% - ${ly_liq[1]}%`}
           price={ly_amount}
         />
 
@@ -73,7 +73,7 @@ export const PoolCard: FC<PoolCardProps> = ({ item }) => {
           labelColor="text-green-400"
           description="Fixed Yield APR"
           valueColor="text-green-400"
-          value={fy_liq}
+          value={`${fy_liq}`}
           price={fy_amount}
         />
       </div>
