@@ -55,6 +55,7 @@ export const DepositDialog: React.FC<DepositDialogProps> = ({
   } = useTokenApproval({
     tokenAddress: tokenAddress,
     spenderAddress: SPENDER_ADDRESS,
+    chainId: poolItem.chainId,
   });
 
   const isLoading = step === "loading" || isApprovalLoading;

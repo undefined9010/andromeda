@@ -4,6 +4,7 @@ import {
   useConfig,
   useReadContract,
   useWriteContract,
+  useSwitchChain,
 } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
 import { MaxUint256 } from "ethers";
@@ -13,6 +14,7 @@ interface UseTokenApprovalProps {
   tokenAddress?: Address;
   spenderAddress?: Address;
   amountToApprove?: bigint;
+  chainId?: string;
 }
 
 interface UseTokenApprovalReturn {
@@ -33,13 +35,20 @@ export const useTokenApproval = ({
   tokenAddress,
   spenderAddress,
   amountToApprove = MaxUint256,
+  chainId,
 }: UseTokenApprovalProps): UseTokenApprovalReturn => {
   const config = useConfig();
-  const { address: accountAddress, isConnected } = useAccount();
+  const {
+    address: accountAddress,
+    isConnected,
+    chainId: userChainId,
+  } = useAccount();
   const [error, setError] = useState<string | null>(null);
   const [internalIsApproved, setInternalIsApproved] = useState<
     boolean | undefined
   >(undefined);
+
+  const { switchChainAsync } = useSwitchChain();
 
   const {
     data: currentAllowance,
@@ -104,6 +113,20 @@ export const useTokenApproval = ({
         setError(err.message);
         callbacks.onError(err);
         return;
+      }
+
+      if (chainId && Number(chainId) !== Number(userChainId)) {
+        try {
+          await switchChainAsync({ chainId: Number(chainId) });
+        } catch (switchError) {
+          const err =
+            switchError instanceof Error
+              ? switchError
+              : new Error("Failed to switch network");
+          setError(err.message);
+          callbacks.onError(err);
+          return;
+        }
       }
 
       try {
