@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-// import useMediaQuery from "@/hooks/useMediaQuery.ts";
+import useMediaQuery from "@/hooks/useMediaQuery.ts";
 
 export const LampContainer = ({
   children,
@@ -9,7 +9,7 @@ export const LampContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  // const isMobile = useMediaQuery("(max-width: 430px)");
+  const isMobile = useMediaQuery("(max-width: 430px)");
 
   return (
     <div
@@ -47,26 +47,26 @@ export const LampContainer = ({
 
         <div className="absolute top-1/2 z-50 h-48 w-full bg-transparent opacity-10 backdrop-blur-md"></div>
         <div className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-1/2 rounded-full bg-[#07c1b6] opacity-50 blur-3xl"></div>
-        {/*<motion.div*/}
-        {/*  initial={{ width: "8rem" }}*/}
-        {/*  whileInView={{ width: "16rem" }}*/}
-        {/*  transition={{*/}
-        {/*    delay: 0.3,*/}
-        {/*    duration: 0.8,*/}
-        {/*    ease: "easeInOut",*/}
-        {/*  }}*/}
-        {/*  className="absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-[#07c1b6] blur-2xl"*/}
-        {/*></motion.div>*/}
-        {/*<motion.div*/}
-        {/*  initial={{ width: "15rem" }}*/}
-        {/*  whileInView={{ width: isMobile ? "70%" : "100%" }}*/}
-        {/*  transition={{*/}
-        {/*    delay: 0.3,*/}
-        {/*    duration: 0.8,*/}
-        {/*    ease: "easeInOut",*/}
-        {/*  }}*/}
-        {/*  className="hidden sm:visible absolute inset-auto z-50 h-0.5 -translate-y-[7rem] bg-[#07c1b6] "*/}
-        {/*></motion.div>*/}
+        <motion.div
+          initial={{ width: "8rem" }}
+          whileInView={{ width: "16rem" }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="hidden sm:block absolute inset-auto z-30 h-36 w-64 -translate-y-[6rem] rounded-full bg-[#07c1b6] blur-2xl"
+        ></motion.div>
+        <motion.div
+          initial={{ width: "15rem" }}
+          whileInView={{ width: isMobile ? "70%" : "100%" }}
+          transition={{
+            delay: 0.3,
+            duration: 0.8,
+            ease: "easeInOut",
+          }}
+          className="hidden sm:visible absolute inset-auto z-50 h-0.5 -translate-y-[7rem] bg-[#07c1b6] "
+        ></motion.div>
 
         <div className="hidden sm:visible absolute inset-auto z-40 h-44 w-full -translate-y-[12.5rem] bg-neutral-950"></div>
       </div>
