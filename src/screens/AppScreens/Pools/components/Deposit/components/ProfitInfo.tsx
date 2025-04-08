@@ -41,43 +41,42 @@ export const ProfitInfo: FC<ProfitInfoProps> = ({ item }) => {
     : "-";
 
   return (
-    <div className="text-white flex flex-col w-full space-y-4 pt-6">
+    <div className="w-full text-white flex flex-col space-y-4 pt-6">
       <div className="flex items-center justify-between">
-        <p className="font-medium">Total APR</p>
-        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400">
+        <p className="font-medium text-sm sm:text-base">
+            Total APR
+        </p>
+        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400 text-sm sm:text-base"> 
           {`Up to ${type === "LY" ? apr : `${fyApr}%`}`}
         </p>
       </div>
+
       <div className="flex items-center justify-between">
-        <p className="font-medium">{`${coinName} DPR`}</p>
-        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400">
+        <p className="font-medium text-sm sm:text-base"> 
+            {`${coinName} DPR`}
+        </p>
+        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400 text-sm sm:text-base"> 
           {`Up to ${type === "LY" ? poolApr : `${fyPoolApr}%`}`}
         </p>
       </div>
-      {/*<div className="flex items-center justify-between">*/}
-      {/*  <p className="font-medium">Revenue sharing APR</p>*/}
-      {/*  <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400">*/}
-      {/*    Up to 24.42%*/}
-      {/*  </p>*/}
-      {/*</div>*/}
-      {/*<div className="flex items-center justify-between">*/}
-      {/*  <p className="font-medium">Bribe APR</p>*/}
-      {/*  <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400">*/}
-      {/*    Up to 24.42%*/}
-      {/*  </p>*/}
-      {/*</div>*/}
+
       <div className="flex items-center justify-between">
-        <p className="font-medium">Duration</p>
-        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400">
-          {watchedDuration === 1 ? `${watchedDuration}` : `${watchedDuration}`}
+        <p className="font-medium text-sm sm:text-base"> 
+            Duration
+        </p>
+        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-blue-600 to-cyan-400 text-sm sm:text-base"> 
+          {`${watchedDuration}`}
         </p>
       </div>
+
       <div className="flex items-center justify-between">
-        <p className="font-medium">Unlock on</p>
-        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-green-300 to-green-600">
+        <p className="font-medium text-sm sm:text-base"> 
+            Unlock on
+        </p>
+        <p className="text-transparent bg-clip-text font-bold bg-gradient-to-r from-green-300 to-green-600 text-sm sm:text-base"> 
           {unlockDate}
         </p>
       </div>
-    </div>
+</div>
   );
 };

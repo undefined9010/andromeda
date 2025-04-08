@@ -94,7 +94,7 @@ export const Input = <
               <CustomLoader />
             ) : (
               <span className="w-full text-gray-500 text-xs line-clamp-1 text-right pr-2 ">
-                balance: {balance ?? "0.00"} {symbol}
+                balance: {balance ?? "0.00"} <span className="hidden sm:block">{symbol}</span>
               </span>
             ))}
         </div>
