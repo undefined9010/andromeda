@@ -92,7 +92,7 @@ export const DepositForm: FC<DepositFormProps> = ({
 
   return (
     <FormProvider {...methods}>
-      <Form.Root onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
+      <Form.Root onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:p-4">
         <Form.Field name="amount" className="flex flex-col">
           <Form.Label className="text-md font-medium text-white mb-2">
             Amount
@@ -106,7 +106,7 @@ export const DepositForm: FC<DepositFormProps> = ({
             symbol={poolName}
             maxValue={Number(formattedBalance)}
             balance={formattedBalance ?? ""}
-            placeholder="Enter amount of tokens"
+            placeholder="Amount"
             isLoadingBalance={isLoadingBalance}
           />
 
@@ -117,13 +117,13 @@ export const DepositForm: FC<DepositFormProps> = ({
           )}
         </Form.Field>
 
-        <div className="flex gap-2 mt-2">
+         <div className="flex gap-2 mt-2">
           {[25, 50, 75, 100].map((percent) => (
             <button
               key={percent}
               type="button"
               onClick={() => handleSetAmount(percent)}
-              className={`px-3 py-1 w-full rounded-md border text-white cursor-pointer transition-colors 
+              className={`px-3 py-1 w-full rounded-md border text-sm sm:text-base text-white cursor-pointer transition-colors 
                 ${
                   selectedPercentage === percent
                     ? "bg-teal-500 border-teal-900"
@@ -149,13 +149,13 @@ export const DepositForm: FC<DepositFormProps> = ({
           />
         </Form.Field>
 
-        <div className="flex gap-2 mt-2">
+        <div className="flex flex-col sm:flex-row gap-2 mt-2">
           {duration.map((d) => (
             <button
               key={d}
               type="button"
               onClick={() => handleSetDuration(d)}
-              className={`px-3 py-1 w-full rounded-md border text-white cursor-pointer transition-colors 
+              className={`px-3 py-1 w-full rounded-md border text-white text-sm sm:text-base cursor-pointer transition-colors 
                 ${
                   selectedDuration === d
                     ? "bg-teal-500 border-teal-900"
@@ -168,7 +168,7 @@ export const DepositForm: FC<DepositFormProps> = ({
         </div>
 
         <ProfitInfo item={item} />
-
+ 
         <Form.Submit asChild>
           <InteractiveHoverButton
             isLoading={isApproving}

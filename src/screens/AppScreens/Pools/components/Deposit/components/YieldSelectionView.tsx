@@ -20,8 +20,8 @@ export const YieldSelectionView: React.FC<YieldSelectionViewProps> = ({
   return (
     <>
       <DialogHeader>
-        <DialogTitle className="text-white">Select Yield Type</DialogTitle>
-        <DialogDescription className="text-white">
+        <DialogTitle className="text-white text-[14px] sm:text-base">Select Yield Type</DialogTitle>
+        <DialogDescription className="text-white text-[12px] sm:text-base">
           Choose your preferred yield option for depositing {item.coinName}.
         </DialogDescription>
       </DialogHeader>
