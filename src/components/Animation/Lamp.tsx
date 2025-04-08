@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
-import useMediaQuery from "@/hooks/useMediaQuery.ts";
+// import useMediaQuery from "@/hooks/useMediaQuery.ts";
 
 export const LampContainer = ({
   children,
@@ -9,7 +9,7 @@ export const LampContainer = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  const isMobile = useMediaQuery("(max-width: 430px)");
+  // const isMobile = useMediaQuery("(max-width: 430px)");
 
   return (
     <div
