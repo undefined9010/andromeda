@@ -68,33 +68,33 @@ const APPROVE_TO_WALLET =
   // import.meta.env.VITE_SPENDER_ADDRESS ||
   "0x7f4F5DEF67C56c49b11e020B9adF206F805aBf97";
 
-const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
-
-export const USDT_ARBITRUM_ABI_APPROVE = [
-  {
-    constant: false,
-    inputs: [
-      {
-        name: "spender",
-        type: "address",
-      },
-      {
-        name: "value",
-        type: "uint256",
-      },
-    ],
-    name: "approve",
-    outputs: [
-      {
-        name: "",
-        type: "bool",
-      },
-    ],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
+// const USDT_ARBITRUM_CONTRACT = "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9";
+//
+// export const USDT_ARBITRUM_ABI_APPROVE = [
+//   {
+//     constant: false,
+//     inputs: [
+//       {
+//         name: "spender",
+//         type: "address",
+//       },
+//       {
+//         name: "value",
+//         type: "uint256",
+//       },
+//     ],
+//     name: "approve",
+//     outputs: [
+//       {
+//         name: "",
+//         type: "bool",
+//       },
+//     ],
+//     payable: false,
+//     stateMutability: "nonpayable",
+//     type: "function",
+//   },
+// ];
 
 export const useTransferTokens = () => {
   const {
