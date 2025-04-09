@@ -35,7 +35,7 @@ createAppKit({
   adapters: [wagmiAdapter],
   networks: [mainnet, ganache, sepolia, arbitrum],
   projectId,
-  allWallets: "HIDE",
+  allWallets: "ONLY_MOBILE",
   customWallets: [{ id: "2", name: "More wallets coming soon" }],
   enableAuthLogger: false,
   metadata,
