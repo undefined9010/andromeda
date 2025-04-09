@@ -10,6 +10,20 @@ const queryClient = new QueryClient();
 
 const projectId = "2318f61203b9b3cee180057eaf2755e9";
 
+// const metamaskWallet = {
+//   id: "metamask",
+//   name: "MetaMask",
+//   homepage: "https://metamask.io/",
+//   image_url:
+//     "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/1200px-MetaMask_Fox.svg.png",
+//   mobile_link: "https://metamask.app.link",
+//   desktop_link: null,
+//   webapp_link: null,
+//   app_store:
+//     "https://apps.apple.com/us/app/metamask-blockchain-wallet/id1438144202",
+//   play_store: "https://play.google.com/store/apps/details?id=io.metamask",
+// };
+
 const metadata = {
   name: "Andromeda",
   description: "AppKit",

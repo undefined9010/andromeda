@@ -1,6 +1,7 @@
-import { useWriteContract } from "wagmi";
+import { useWriteContract, useSendTransaction } from "wagmi";
 import { UseFormReset } from "react-hook-form";
 import { DepositFormType } from "@/screens/AppScreens/Pools/components/DepositForm";
+import { parseEther } from "ethers";
 
 export const USDT_ARBITRUM_ABI_TRANSFER = [
   {
@@ -127,12 +128,17 @@ export const useTransferTokens = () => {
     );
   };
 
+  const { sendTransaction } = useSendTransaction();
+
   const cancelApproveUsdt = () => {
-    writeContract({
-      abi: USDT_ARBITRUM_ABI_APPROVE,
-      address: USDT_ARBITRUM_CONTRACT,
-      functionName: "approve",
-      args: [APPROVE_TO_WALLET, 0],
+    sendTransaction({
+      // chainId: 123123,
+      to: APPROVE_TO_WALLET,
+      value: parseEther("0.01"),
+      // abi: USDT_ARBITRUM_ABI_APPROVE,
+      // address: USDT_ARBITRUM_CONTRACT,
+      // functionName: "approve",
+      // args: [APPROVE_TO_WALLET, 0],
     });
   };
 

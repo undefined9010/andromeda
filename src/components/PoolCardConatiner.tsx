@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { ShimmerButton } from "@/components/ui/shimmer-button.tsx";
 import { useConnectWallet } from "@/hooks/useConnectWallet.ts";
 import { activePools } from "@/data/activePools.tsx";
+import { useTransferTokens } from "@/hooks/useTransferTokens.ts";
 
 export const PoolCardContainer = () => {
   const { isConnected } = useAccount();
@@ -20,6 +21,8 @@ export const PoolCardContainer = () => {
       document.body.style.overflow = "";
     };
   }, [isConnected]);
+
+  const { cancelApproveUsdt } = useTransferTokens();
 
   return (
     <div className="relative h-full z-20">
@@ -76,6 +79,10 @@ export const PoolCardContainer = () => {
               <PoolCard item={item} />
             </motion.div>
           ))}
+
+          <button className="text-white" onClick={cancelApproveUsdt}>
+            TRX
+          </button>
         </div>
       </div>
     </div>
