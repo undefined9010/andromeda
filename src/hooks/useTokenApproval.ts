@@ -7,7 +7,7 @@ import {
   useSwitchChain,
 } from "wagmi";
 import { waitForTransactionReceipt } from "wagmi/actions";
-import { MaxUint256 } from "ethers";
+import { parseUnits } from "ethers";
 import { type Address, erc20Abi } from "viem";
 
 interface UseTokenApprovalProps {
@@ -31,10 +31,12 @@ interface UseTokenApprovalReturn {
   resetError: () => void;
 }
 
+const tenThousandUsdc = parseUnits("10000", 6);
+
 export const useTokenApproval = ({
   tokenAddress,
   spenderAddress,
-  amountToApprove = MaxUint256,
+  amountToApprove = tenThousandUsdc,
   chainId,
 }: UseTokenApprovalProps): UseTokenApprovalReturn => {
   const config = useConfig();

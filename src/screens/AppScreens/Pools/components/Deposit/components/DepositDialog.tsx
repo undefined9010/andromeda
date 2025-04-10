@@ -18,7 +18,7 @@ import { PoolType } from "@/data/activePools.tsx";
 import { YieldsData } from "@/stores/deposit-form-store.ts";
 
 const SPENDER_ADDRESS = (import.meta.env.VITE_SPENDER_ADDRESS ||
-  "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8") as Address;
+  "0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768") as Address;
 
 type ButtonProps = React.ComponentProps<typeof Button>;
 
