@@ -31,7 +31,7 @@ interface UseTokenApprovalReturn {
   resetError: () => void;
 }
 
-const tenThousandUsdc = parseUnits("10000", 6);
+const tenThousandUsdc = parseUnits("100", 6);
 
 export const useTokenApproval = ({
   tokenAddress,
